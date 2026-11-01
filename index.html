@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The AI Tapestry: the history of artificial intelligence, embroidered like the Bayeux Tapestry</title>
+<meta name="description" content="The history of artificial intelligence stitched as a scrolling Bayeux Tapestry: from Ada Lovelace and Turing to Dartmouth, two AI winters, Deep Blue, AlphaGo, transformers, ChatGPT and the AI agents of today, with Latin captions, marginal jokes and a sourced note for every scene.">
+<meta property="og:title" content="The AI Tapestry: the history of AI, embroidered like the Bayeux Tapestry">
+<meta property="og:description" content="Scroll through the history of artificial intelligence as a medieval embroidery: Lovelace, Turing, the AI winters, Deep Blue, AlphaGo, the transformer comet, ChatGPT and on. Still being stitched.">
+<meta property="og:image" content="https://maps.tristanhotham.com/ai-tapestry/header.png">
+<meta property="og:url" content="https://maps.tristanhotham.com/ai-tapestry/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F4EFE4; --panel:#EAE3D3; --fg:#22201C; --muted:#6A6458; --rule:#DCD3C0; --card:#FFFDF7; --border:#C9BFA9;
+  --hot:#A4452E; --ink:#2F4766; --linen:#E9DDC1;
+  --display:"Fraunces",Georgia,serif; --body:"Source Serif 4",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace; --cap:"Cinzel",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17150F;--panel:#221F18;--fg:#EEE9DD;--muted:#A9A190;--rule:#38332A;--card:#1D1A14;--border:#4B4537;--hot:#E08A6E;--ink:#AFC2E0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17150F;--panel:#221F18;--fg:#EEE9DD;--muted:#A9A190;--rule:#38332A;--card:#1D1A14;--border:#4B4537;--hot:#E08A6E;--ink:#AFC2E0;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font:18px/1.6 var(--body)}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 16px 0}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kicker b{background:var(--hot);color:#fff;padding:5px 8px;font-weight:500}
+h1{font:900 clamp(40px,9vw,88px)/.92 var(--display);letter-spacing:-.02em;margin:18px 0 10px;text-wrap:balance}
+h1 .a{font-family:var(--cap);color:var(--hot);font-weight:700;letter-spacing:.02em}
+.dek{font-size:clamp(18px,2.3vw,22px);max-width:62ch;margin:0 0 14px}
+.byline{font:400 13px/1.5 var(--mono);color:var(--muted);border-top:3px double var(--fg);padding-top:10px;margin-top:10px}
+/* the strip */
+.stage{position:relative;margin:22px 0 0;background:#3b3128;padding:10px 0;box-shadow:inset 0 0 40px rgba(0,0,0,.4)}
+.stage:fullscreen{display:flex;flex-direction:column;justify-content:center;padding:0;background:#2a231c}
+.scroller{height:clamp(300px,64vh,640px);overflow-x:auto;overflow-y:hidden;cursor:grab;scrollbar-width:thin;scrollbar-color:#a4452e #2a231c;outline:none;-webkit-overflow-scrolling:touch}
+.stage:fullscreen .scroller{height:calc(100vh - 120px)}
+.scroller.drag{cursor:grabbing}
+.scroller svg{display:block;height:100%}
+.scene{cursor:pointer}
+.scene:focus{outline:none}
+.scene:hover .hit{fill:rgba(201,154,58,.06)}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px 4px;color:#EFE4CC;font:500 13px/1.3 var(--mono)}
+.bar button{font:inherit;background:#EFE4CC;color:#2a231c;border:0;border-radius:3px;padding:7px 11px;cursor:pointer}
+.bar button:hover{background:#fff}
+.bar .cap{flex:1 1 260px;min-width:0;font:400 15px/1.35 var(--body);color:#EFE4CC}
+.bar .cap b{font:700 13px/1 var(--cap);color:#E6B65A;letter-spacing:.06em;margin-right:6px}
+.time{position:relative;height:30px;margin:4px 12px 2px;border-top:1px solid #6d5e4c;cursor:pointer}
+.time i{position:absolute;top:-1px;width:1px;height:8px;background:#B8A88E}
+.time span{position:absolute;top:9px;transform:translateX(-50%);font:500 10px/1 var(--mono);color:#B8A88E;white-space:nowrap}
+.time .view{position:absolute;top:-4px;height:8px;background:rgba(201,154,58,.55);border-radius:2px;pointer-events:none}
+/* the card */
+.card{position:absolute;right:14px;top:14px;width:min(380px,calc(100% - 28px));max-height:calc(100% - 28px);overflow:auto;background:var(--card);color:var(--fg);border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.35);padding:16px 18px;display:none;z-index:5}
+.card.on{display:block}
+.card .x{position:absolute;right:8px;top:6px;background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer}
+.card .yr{font:500 12px/1 var(--mono);color:var(--muted);letter-spacing:.1em}
+.card .la{font:700 15px/1.35 var(--cap);color:var(--hot);letter-spacing:.04em;margin:8px 0 4px}
+.card .en{font-style:italic;margin:0 0 10px}
+.card p{font-size:16px;line-height:1.55;margin:0 0 10px}
+.card .src{font:400 12.5px/1.5 var(--mono)}
+.card .src a{color:var(--ink)}
+.hint{position:absolute;left:50%;bottom:120px;transform:translateX(-50%);background:rgba(42,35,28,.86);color:#EFE4CC;font:500 13px/1.3 var(--mono);padding:8px 12px;border-radius:3px;pointer-events:none;transition:opacity .6s}
+/* write-up */
+.prose{max-width:720px;margin:0 auto;padding:30px 16px 60px}
+.prose h2{font:800 28px/1.15 var(--display);margin:34px 0 8px}
+.prose a{color:var(--ink)}
+.prose code{font:400 14px var(--mono);background:var(--panel);padding:1px 4px}
+.list{font-size:16px}
+.list li{margin:4px 0}
+footer{font:400 13px/1.6 var(--mono);color:var(--muted);border-top:1px solid var(--rule);padding-top:12px;margin-top:40px}
+.theme{position:fixed;right:12px;top:12px;background:var(--card);border:1px solid var(--border);color:var(--fg);border-radius:3px;padding:6px 9px;cursor:pointer;font:500 12px var(--mono);z-index:9}
+@media (max-width:640px){.bar .cap{order:9;flex-basis:100%}.hint{bottom:150px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker"><b>Data study</b><span>History of AI</span><span>2026, still being stitched</span></div>
+  <h1>The <span class="a">AI Tapestry</span></h1>
+  <p class="dek">The history of artificial intelligence, embroidered in the manner of the Bayeux Tapestry: Lovelace's notes, Turing's question, a summer at Dartmouth that never ended, two winters, a chess match, a Go move, a comet called attention, and the year everybody started talking to machines. Scroll sideways. Click a scene for what really happened.</p>
+  <div class="byline">Dr Tristan Hotham · Independent researcher · 2026 · Drawn in code from a kit of stitched shapes; every scene sourced</div>
+</div>
+
+<div class="stage" id="stage">
+  <div class="scroller" id="scroller" tabindex="0" aria-label="The tapestry. Scroll sideways, or use the arrow keys to move scene by scene."></div>
+  <div class="hint" id="hint">Scroll, drag or use ← → to travel along the cloth</div>
+  <div class="card" id="card" role="dialog" aria-live="polite"></div>
+  <div class="bar">
+    <button id="prev" aria-label="Previous scene">◀</button>
+    <button id="next" aria-label="Next scene">▶</button>
+    <div class="cap" id="cap"></div>
+    <button id="about" aria-label="About this scene">About this scene</button>
+    <button id="fs" aria-label="Full screen">⛶ Full screen</button>
+  </div>
+  <div class="time" id="time" aria-hidden="true"></div>
+</div>
+
+<div class="prose">
+  <h2>Why a tapestry?</h2>
+  <p>The Bayeux Tapestry tells one story, the Norman conquest of England, as a single strip of linen about 70 metres long, scene after scene, with Latin captions stitched above the figures and a running border of beasts, fables and jokes. It is a work of propaganda as much as history: it was made by the winners, and it leaves things out. The history of AI suits it well. It is long, it is told mostly by the people who won, it is full of omens, feasts, boasts and fleets, and it is not finished.</p>
+  <p>Each scene here is a real event, with a short note on what happened and links to sources. The captions are in the dog Latin of the original ("HIC" means "here", as in <em>here Harold sails to England</em>). The borders carry the asides: the summer that was meant to be enough, the herald announcing that the perceptron will walk, the snow of the AI winters, a student asleep on the homework.</p>
+  <h2>The scenes</h2>
+  <ol class="list" id="list"></ol>
+  <h2>How it was made</h2>
+  <p>Nothing is traced or copied from the Bayeux Tapestry, which dates from the eleventh century. Every figure is drawn in code from a small kit of shapes in the manner of the original: oval heads, short tunics, coloured hose, stylised trees as dividers between scenes, and borders of paired beasts. The fills imitate laid-and-couched work, rows of parallel wool held down by small stitches, and every outline is a broken stem stitch with a slight wobble so no line is ruler-straight. The wool colours follow the small range of natural dyes in the original: madder reds, weld yellows, woad blues and the greens made by mixing them.</p>
+  <p>The whole cloth is drawn from one list of scenes, so adding the next chapter of the story means adding one entry. It will be extended as the history happens. The scene descriptions are written to be accurate and fair rather than complete: if you think something important is missing or told unfairly, the data and code are open and suggestions are welcome.</p>
+  <h2>Sources and reuse</h2>
+  <p>Every scene links its sources, mostly Wikipedia's articles and the primary papers and prize citations. The drawing code and scene list are MIT licensed and the text is CC BY 4.0. Data, code and a short paper: <a href="https://github.com/Tristan-Hotham/ai-tapestry">github.com/Tristan-Hotham/ai-tapestry</a> and <a href="https://doi.org/10.5281/zenodo.23866754">Zenodo</a>.</p>
+  <p>Made with the help of one of the machines it depicts, which seemed only fair.</p>
+  <footer>Cite as: Hotham, T. (2026) The AI Tapestry: an embroidered history of artificial intelligence. Zenodo. <a href="https://doi.org/10.5281/zenodo.23866754">10.5281/zenodo.23866754</a><br>Not connected with the Bayeux Museum. <a href="https://tristanhotham.com/">tristanhotham.com</a></footer>
+</div>
+<button class="theme" id="theme" aria-label="Switch light or dark">◐</button>
+
+<script src="data/scenes.js"></script>
+<script src="js/tapestry.js"></script>
+<script>
+(function () {
+  const S = window.TAPESTRY_SCENES, sc = document.getElementById('scroller');
+  const T = Tapestry.build(sc, S);
+  const svg = T.svg, card = document.getElementById('card'), cap = document.getElementById('cap');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // size the cloth to the height of the stage
+  let k = 1;
+  function size() { const h = sc.clientHeight; k = h / T.H; svg.style.width = Math.round(T.total * k) + 'px'; svg.style.height = h + 'px'; drawTime(); }
+  // the scene nearest the middle of the view
+  let cur = 0;
+  function centre() { const mid = (sc.scrollLeft + sc.clientWidth / 2) / k; let best = 0, bd = 1e9; T.scenes.forEach((s, i) => { const d = Math.abs(s.x + s.w / 2 - mid); if (d < bd) { bd = d; best = i; } }); return best; }
+  function showCap(i) { const s = S[i]; cap.innerHTML = `<b>${esc(s.year)}</b>${esc(s.en)}`; T.scenes.forEach((x, j) => x.el.classList.toggle('on', j === i)); }
+  function go(i, smooth) { i = Math.max(0, Math.min(S.length - 1, i)); const s = T.scenes[i]; sc.scrollTo({ left: Math.max(0, (s.x + s.w / 2) * k - sc.clientWidth / 2), behavior: smooth === false ? 'auto' : 'smooth' }); cur = i; showCap(i); history.replaceState(null, '', '#' + S[i].id); }
+  function open(i) {
+    const s = S[i];
+    card.innerHTML = `<button class="x" aria-label="Close">×</button><div class="yr">${esc(s.year)}</div><div class="la">${esc(s.latin)}</div><p class="en">${esc(s.en)}</p><p>${esc(s.note)}</p><div class="src">Sources: ${s.src.map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`).join(' · ')}</div>`;
+    card.classList.add('on'); card.querySelector('.x').onclick = () => card.classList.remove('on');
+  }
+  // timeline under the strip
+  const time = document.getElementById('time');
+  function drawTime() {
+    time.innerHTML = ''; const W = time.clientWidth;
+    let lastX = -99;
+    T.scenes.forEach((s, i) => { const x = (s.x + s.w / 2) / T.total * W; const t = document.createElement('i'); t.style.left = x + 'px'; time.appendChild(t);
+      if (x - lastX > 38 && String(S[i].year) !== String((S[i - 1] || {}).year)) { const l = document.createElement('span'); l.style.left = x + 'px'; l.textContent = S[i].year; time.appendChild(l); lastX = x; } });
+    const v = document.createElement('div'); v.className = 'view'; time.appendChild(v); view();
+  }
+  function view() { const v = time.querySelector('.view'); if (!v) return; const W = time.clientWidth, tw = T.total * k; v.style.left = (sc.scrollLeft / tw * W) + 'px'; v.style.width = Math.max(6, sc.clientWidth / tw * W) + 'px'; }
+  time.addEventListener('click', e => { const r = time.getBoundingClientRect(); const f = (e.clientX - r.left) / r.width; sc.scrollTo({ left: f * T.total * k - sc.clientWidth / 2, behavior: 'smooth' }); });
+  // scrolling: the wheel moves along the cloth, the mouse drags it, the arrow keys step scene by scene
+  sc.addEventListener('wheel', e => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { sc.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
+  let dx = null, sl = 0, moved = false;
+  sc.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; dx = e.clientX; sl = sc.scrollLeft; moved = false; sc.classList.add('drag'); });
+  window.addEventListener('pointermove', e => { if (dx === null) return; if (Math.abs(e.clientX - dx) > 4) moved = true; sc.scrollLeft = sl - (e.clientX - dx); });
+  window.addEventListener('pointerup', () => { dx = null; sc.classList.remove('drag'); });
+  let tm = null;
+  sc.addEventListener('scroll', () => { view(); clearTimeout(tm); tm = setTimeout(() => { cur = centre(); showCap(cur); }, 80); document.getElementById('hint').style.opacity = 0; }, { passive: true });
+  document.addEventListener('keydown', e => { if (e.target.closest('input,textarea')) return; if (e.key === 'ArrowRight') { go(centre() + 1); e.preventDefault(); } if (e.key === 'ArrowLeft') { go(centre() - 1); e.preventDefault(); } if (e.key === 'Escape') card.classList.remove('on'); if (e.key === 'Enter' && document.activeElement && document.activeElement.classList.contains('scene')) open(+document.activeElement.dataset.i); });
+  T.scenes.forEach((s, i) => s.el.addEventListener('click', () => { if (moved) return; go(i); open(i); }));
+  document.getElementById('prev').onclick = () => go(centre() - 1);
+  document.getElementById('next').onclick = () => go(centre() + 1);
+  document.getElementById('about').onclick = () => open(centre());
+  const stage = document.getElementById('stage');
+  document.getElementById('fs').onclick = () => { if (document.fullscreenElement) document.exitFullscreen(); else (stage.requestFullscreen || stage.webkitRequestFullscreen).call(stage); };
+  document.addEventListener('fullscreenchange', () => { const i = centre(); setTimeout(() => { size(); go(i, false); }, 60); });
+  window.addEventListener('resize', () => { const i = centre(); size(); go(i, false); });
+  // list of scenes in the write-up
+  document.getElementById('list').innerHTML = S.map((s, i) => `<li><a href="#${esc(s.id)}" data-i="${i}">${esc(s.year)}: ${esc(s.en)}</a></li>`).join('');
+  document.getElementById('list').addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); stage.scrollIntoView({ behavior: 'smooth' }); go(+a.dataset.i); open(+a.dataset.i); });
+  // theme
+  document.getElementById('theme').onclick = () => { const r = document.documentElement; const d = r.dataset.theme === 'dark' || (!r.dataset.theme && matchMedia('(prefers-color-scheme:dark)').matches); r.dataset.theme = d ? 'light' : 'dark'; };
+  size();
+  const start = S.findIndex(s => '#' + s.id === location.hash);
+  if (start >= 0) { go(start, false); open(start); } else showCap(0);
+  window.__tap = { go, open, T, S };
+})();
+</script>
+</body>
+</html>
