@@ -8,7 +8,7 @@
  *   ['text', x, y, string, size, colour]. Ground is at y 438; the main band runs from 70 to 470. */
 window.TAPESTRY_SCENES = [
   {
-    id: 'lovelace', year: 1843, w: 760,
+    id: 'lovelace', year: 1843, w: 760, bg: 'town',
     latin: 'HIC ADA NOTAS SCRIBIT ET MACHINAM CANTARE SOMNIAT',
     en: 'Here Ada writes her notes, and dreams that the engine might make music.',
     note: "Ada Lovelace translated an Italian paper on Charles Babbage's Analytical Engine and added notes three times its length. Note G sets out step by step how the engine could compute Bernoulli numbers, often called the first published computer program, and she guessed it might one day compose music. She also wrote that it could only do what we know how to order it to do: the first objection to machine intelligence, and one Turing answered by name. The engine itself was never finished.",
@@ -20,18 +20,18 @@ window.TAPESTRY_SCENES = [
     bottom: [['coins', 140, 520, 3], ['text', 420, 528, 'ET MACHINA NVMQVAM PERFICITVR', 11, 'rust']],
   },
   {
-    id: 'turing', year: 1950, w: 760,
+    id: 'turing', year: 1950, w: 760, bg: 'hall',
     latin: 'HIC TVRING ROGAT: POSSVNTNE MACHINAE COGITARE?',
     en: 'Here Turing asks: can machines think?',
     note: 'In "Computing Machinery and Intelligence" Alan Turing swapped an unanswerable question for a game: if a judge, talking by typed messages, cannot tell a machine from a person, what grounds are left for saying it does not think? He predicted that by about the year 2000 machines would fool an average judge for five minutes 30 per cent of the time, and he answered nine objections in advance, including "Lady Lovelace\'s".',
     src: [['Computing Machinery and Intelligence (Wikipedia)', 'https://en.wikipedia.org/wiki/Computing_Machinery_and_Intelligence'], ['Turing test (Wikipedia)', 'https://en.wikipedia.org/wiki/Turing_test']],
     draw: [['person', 170, { name: 'TVRING', tunic: 'blue', legs: 'rust', hair: 'rust', pose: 'think' }], ['curtain', 300, 140], ['curtain', 470, 140],
       ['person', 385, { tunic: 'sage', legs: 'blue', hair: 'ochre', pose: 'type', face: -1 }], ['bench', 392, 30],
-      ['cabinet', 600, { c: 'teal', label: '? ? ?' }], ['speech', 170, 304, 'ARE YOU A MACHINE?'], ['speech', 600, 300, 'ARE YOU?']],
+      ['cabinet', 600, { c: 'teal', label: '? ? ?' }], ['speech', 196, 292, 'ARE YOU A MACHINE?'], ['speech', 600, 300, 'ARE YOU?']],
     bottom: [['text', 380, 528, 'LVDVS IMITATIONIS', 12, 'blue']],
   },
   {
-    id: 'dartmouth', year: 1956, w: 820,
+    id: 'dartmouth', year: 1956, w: 820, bg: 'hills',
     latin: 'HIC DOCTI DARTMVTHIAE CONVENIVNT ET VNAM AESTATEM SVFFICERE PVTANT',
     en: 'Here the learned meet at Dartmouth and reckon one summer will be enough.',
     note: 'The proposal for the Dartmouth Summer Research Project, which coined the name "artificial intelligence", asked for "a 2 month, 10 man study" and hoped that "a significant advance can be made" on language, abstraction and self-improvement "if a carefully selected group of scientists work on it together for a summer". It was organised by John McCarthy, Marvin Minsky, Nathaniel Rochester and Claude Shannon. The summer has lasted rather longer.',
@@ -42,7 +42,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['calendar', 200, 530, 'AESTAS'], ['text', 420, 528, '"AD SVMMVM DVOS MENSES"', 11, 'rust'], ['calendar', 640, 530, 'MMXXVI']],
   },
   {
-    id: 'perceptron', year: 1958, w: 760,
+    id: 'perceptron', year: 1958, w: 760, bg: 'town',
     latin: 'HIC ROSENBLATT PERCEPTRONEM FACIT ET PRAECONES EAM AMBVLATVRAM CLAMANT',
     en: 'Here Rosenblatt makes the perceptron, and the heralds cry that it will walk.',
     note: 'Frank Rosenblatt\'s perceptron learned to sort simple pictures by adjusting the weights on its connections, the ancestor of every neural network since. The New York Times reported that the Navy expected it to be the "embryo of an electronic computer" that would "walk, talk, see, write, reproduce itself and be conscious of its existence". The Mark I Perceptron was a cabinet of wires and motor-driven dials with a 20 by 20 grid of light cells for an eye.',
@@ -53,7 +53,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 380, 528, 'MACHINA NONDVM AMBVLAT', 11, 'rust'], ['person', 600, { tunic: 'teal', legs: 'rust', hair: 'ochre', pose: 'walk' }]],
   },
   {
-    id: 'eliza', year: 1966, w: 720,
+    id: 'eliza', year: 1966, w: 720, bg: 'campus',
     latin: 'HIC ELIZA AVSCVLTAT ET HOMINES EI SECRETA NARRANT',
     en: 'Here ELIZA listens, and people tell it their secrets.',
     note: 'Joseph Weizenbaum\'s ELIZA ran a script called DOCTOR that played a psychotherapist by turning what you typed back into a question. Weizenbaum was dismayed at how quickly people confided in it; he wrote that his secretary, who had watched him build it, asked him to leave the room so she could talk to it in private. He spent much of his later career warning against handing human judgement to machines.',
@@ -64,7 +64,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 360, 528, 'EXI E CONCLAVI, IOSEPH', 11, 'rust']],
   },
   {
-    id: 'winter', year: 1973, w: 800,
+    id: 'winter', year: 1973, w: 800, bg: 'snow',
     latin: 'HIC LIGHTHILL IVDICAT, PECVNIA FVGIT ET VENIT HIEMS',
     en: 'Here Lighthill gives his verdict, the money flees and winter comes.',
     note: 'After Minsky and Papert showed in 1969 what a single-layer perceptron could not learn, and the grand promises of the 1960s went unmet, funding dried up. In Britain, Sir James Lighthill\'s 1973 report to the Science Research Council found that no part of the field had made the major impact once promised, and most British AI research lost its funding; in the United States, the military agency DARPA cut back. The lean years became known as the first AI winter.',
@@ -77,7 +77,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['flake', 140, 520], ['text', 400, 528, 'PRIMA HIEMS', 12, 'blue'], ['flake', 660, 520]],
   },
   {
-    id: 'expert', year: 1980, w: 800,
+    id: 'expert', year: 1980, w: 800, bg: 'town',
     latin: 'HIC MERCATORES REGVLAS VENDVNT: SI HOC, TVNC ILLVD',
     en: 'Here the merchants sell rules: if this, then that.',
     note: 'The 1980s boom ran on expert systems: thousands of hand-written if-then rules distilled from specialists. XCON, built for Digital Equipment Corporation, configured computer orders and was said to save the firm tens of millions of dollars a year. Japan launched its Fifth Generation Computer project, specialised LISP machines were sold to run it all, and then the market for them collapsed in 1987, bringing a second winter: the rules were brittle, expensive to keep up and could not learn.',
@@ -88,7 +88,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 400, 528, 'MCMLXXXVII: ALTERA HIEMS', 11, 'blue'], ['flake', 640, 520, 0.8], ['flake', 160, 520, 0.8]],
   },
   {
-    id: 'backprop', year: 1986, w: 720,
+    id: 'backprop', year: 1986, w: 720, bg: 'campus',
     latin: 'HIC ERRORES RETRO PROPAGANTVR ET RETIA DISCVNT',
     en: 'Here the errors are passed back and the networks learn.',
     note: 'Rumelhart, Hinton and Williams showed in Nature how networks with hidden layers could learn by passing their errors backwards through the connections, nudging every weight a little: backpropagation. The idea had earlier roots, but this paper made it work and spread it. It is still how almost every neural network is trained, and it answered the limits Minsky and Papert had found in the single-layer perceptron.',
@@ -98,7 +98,7 @@ window.TAPESTRY_SCENES = [
       ['person', 620, { tunic: 'blue', legs: 'rust', hair: 'rust', pose: 'point', face: -1 }], ['text', 360, 308, '◄  ERROR  ◄  ERROR  ◄  ERROR', 12, 'red']],
   },
   {
-    id: 'deepblue', year: 1997, w: 760,
+    id: 'deepblue', year: 1997, w: 760, bg: 'city',
     latin: 'HIC CAERVLEVS PROFVNDVS KASPAROVVM VINCIT',
     en: 'Here Deep Blue defeats Kasparov.',
     note: "IBM's Deep Blue beat the world chess champion Garry Kasparov over six games in New York, the first time a computer had won a match against a reigning champion under tournament conditions. It won by brute force and expert-tuned evaluation, searching up to about 200 million positions a second, not by learning. Kasparov suspected human help and asked for a rematch; IBM retired the machine.",
@@ -108,7 +108,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 380, 528, 'REX CAPTVS', 12, 'blue']],
   },
   {
-    id: 'watson', year: 2011, w: 700,
+    id: 'watson', year: 2011, w: 700, bg: 'hall',
     latin: 'HIC WATSON IN LVDO INTERROGATIONVM VINCIT',
     en: 'Here Watson wins at Jeopardy!',
     note: "IBM's Watson beat the two most successful Jeopardy! champions, Ken Jennings and Brad Rutter, on television, answering clues written in puns and wordplay. Jennings added to his final answer: \"I for one welcome our new computer overlords.\" Watson was later sold for medicine, with mixed results.",
@@ -118,7 +118,7 @@ window.TAPESTRY_SCENES = [
       ['speech', 200, 304, 'WELCOME, OVERLORDS'], ['person', 620, { tunic: 'ochre', legs: 'red', hair: 'grey', pose: 'point', face: -1, hold: 'scroll' }]],
   },
   {
-    id: 'imagenet', year: 2012, w: 820,
+    id: 'imagenet', year: 2012, w: 820, bg: 'valley',
     latin: 'HIC MACHINAE FELES VIDENT ET FORNACES GRAPHICAE ARDENT',
     en: 'Here the machines see cats, and the graphics furnaces burn.',
     note: 'AlexNet, by Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton, won the ImageNet image-recognition contest by a wide margin, a deep neural network trained on two gaming graphics cards. The same year a Google network, shown frames from YouTube, learned on its own to respond to cats. Deep learning took over the field, and graphics chips became the furnaces of a new industry.',
@@ -128,19 +128,19 @@ window.TAPESTRY_SCENES = [
     top: [['cat', 200, { y: 62, s: 0.6 }], ['cat', 340, { y: 62, s: 0.6, c: 'rust', face: -1 }], ['cat', 480, { y: 62, s: 0.6, c: 'teal' }], ['cat', 620, { y: 62, s: 0.6, face: -1 }]],
   },
   {
-    id: 'openai', year: 2015, w: 820,
+    id: 'openai', year: 2015, w: 820, bg: 'valley',
     latin: 'HIC SAMVEL ET ELON OPENAI CONDVNT, NON LVCRI CAVSA',
     en: 'Here Sam and Elon found OpenAI, not for profit.',
     note: 'OpenAI was founded in December 2015 as a non-profit research lab, with Sam Altman, Elon Musk, Ilya Sutskever, Greg Brockman and others among its founders and a pledge of a billion dollars from its backers, to make sure that artificial general intelligence "benefits all of humanity". Musk left the board in 2018. In 2019 OpenAI set up a capped-profit company to raise money, Microsoft invested, and in 2024 Musk sued, saying the lab had abandoned its founding mission; OpenAI published his old emails in reply.',
     src: [['OpenAI (Wikipedia)', 'https://en.wikipedia.org/wiki/OpenAI'], ['Elon Musk (Wikipedia)', 'https://en.wikipedia.org/wiki/Elon_Musk']],
     draw: [['table', 360, { w: 300 }], ['person', 250, { name: 'SAMVEL', tunic: 'grey', legs: 'blue', hair: 'rust', pose: 'raise', hold: 'cup', mood: 'happy', s: 0.92 }],
       ['person', 330, { name: 'ELON', tunic: 'black', legs: 'grey', hair: 'grey', pose: 'point', mood: 'happy' }], ['person', 410, { name: 'ILYA', tunic: 'teal', legs: 'ochre', bald: true, hair: 'grey', pose: 'think', face: -1 }],
-      ['person', 480, { name: 'GREG', tunic: 'sage', legs: 'rust', hair: 'ochre', pose: 'cheer', face: -1 }], ['banner', 360, 300, 'PRO OMNI HVMANITATE'],
+      ['person', 480, { name: 'GREG', tunic: 'sage', legs: 'rust', hair: 'ochre', pose: 'cheer', face: -1 }], ['banner', 360, 286, 'PRO OMNI HVMANITATE'],
       ['chest', 600], ['text', 600, 380, '$1.000.000.000', 9, 'rust'], ['person', 720, { name: 'ELON', tunic: 'black', legs: 'grey', hair: 'grey', pose: 'walk', mood: 'angry', hold: 'scroll' }], ['door', 780, { label: 'MMXVIII' }]],
     bottom: [['text', 260, 528, 'MMXXIV: ELON LITEM INTENDIT', 11, 'rust'], ['text', 700, 528, 'NON LVCRI CAVSA?', 11, 'blue']],
   },
   {
-    id: 'alphago', year: 2016, w: 780,
+    id: 'alphago', year: 2016, w: 780, bg: 'city',
     latin: 'HIC ALPHAGO MOTVM XXXVII FACIT ET OMNES MIRANTVR',
     en: 'Here AlphaGo plays move 37 and everyone marvels.',
     note: "DeepMind's AlphaGo beat Lee Sedol, one of the strongest Go players of the age, four games to one in Seoul. In game two its 37th move, a shoulder hit on the fifth line, looked like a mistake to every professional watching; commentators later called it beautiful. In game four Lee found a move of his own, his 78th, that AlphaGo had not foreseen, and won: the only game a human took from it.",
@@ -150,7 +150,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 390, 528, 'ET MOTVS LXXVIII HOMINIS', 11, 'blue']],
   },
   {
-    id: 'transformer', year: 2017, w: 820,
+    id: 'transformer', year: 2017, w: 820, bg: 'night',
     latin: 'ISTI MIRANT ATTENTIONEM',
     en: 'These people marvel at the attention.',
     note: 'A paper by eight Google researchers, "Attention Is All You Need", introduced the transformer, which weighs every word against every other word at once instead of reading in order. It trains well on huge numbers of chips in parallel, and it is the T in GPT. The caption borrows from the most famous scene in the original, where people stare and point at a comet: ISTI MIRANT STELLA, these people marvel at the star.',
@@ -161,7 +161,7 @@ window.TAPESTRY_SCENES = [
     top: [['star', 120, 40, 0.8], ['star', 300, 48, 0.6], ['star', 480, 38, 0.8], ['star', 660, 46, 0.6]],
   },
   {
-    id: 'gpt2', year: 2019, w: 720,
+    id: 'gpt2', year: 2019, w: 720, bg: 'valley',
     latin: 'HIC FABRI DICVNT: NIMIS PERICVLOSVM EST, ET CLAVDVNT',
     en: 'Here the makers say it is too dangerous, and lock it away.',
     note: 'OpenAI announced GPT-2, a language model that wrote startlingly fluent paragraphs, and at first held back the full version for fear of misuse, releasing it in stages over nine months. Many researchers thought the caution overdone; others saw it as the first time a lab had tried a staged release. A year later GPT-3, more than a hundred times larger, showed that simply making models bigger kept making them better.',
@@ -170,7 +170,7 @@ window.TAPESTRY_SCENES = [
       ['person', 640, { tunic: 'ochre', legs: 'blue', hair: 'ochre', pose: 'think', face: -1 }], ['speech', 380, 330, 'NIMIS PERICVLOSVM'], ['person', 110, { tunic: 'sage', legs: 'red', hair: 'rust', pose: 'walk', hold: 'scroll' }]],
   },
   {
-    id: 'alphafold', year: 2020, w: 720,
+    id: 'alphafold', year: 2020, w: 720, bg: 'campus',
     latin: 'HIC PROTEINA PLICANTVR ET QVAESTIO QVINQVAGINTA ANNORVM SOLVITVR',
     en: 'Here the proteins fold, and a fifty-year question is answered.',
     note: "DeepMind's AlphaFold 2 predicted the 3D shapes of proteins from their sequence of amino acids about as accurately as laboratory methods, in the CASP14 assessment. Working out how a chain of amino acids folds had been a central puzzle of biology for half a century. In 2022 the team released predicted structures for some 200 million proteins, nearly every one known to science.",
@@ -179,7 +179,7 @@ window.TAPESTRY_SCENES = [
       ['person', 620, { tunic: 'ochre', legs: 'sage', hair: 'rust', pose: 'carry', face: -1, hold: 'book' }], ['text', 360, 380, 'CC MILLIONES', 12, 'rust']],
   },
   {
-    id: 'artprize', year: 2022, w: 780,
+    id: 'artprize', year: 2022, w: 780, bg: 'fields',
     latin: 'HIC PICTVRA MACHINAE PRAEMIVM VINCIT ET PICTORES IRASCVNTVR',
     en: 'Here a machine\'s painting wins the prize, and the painters are furious.',
     note: 'Jason M. Allen won first prize for digital art at the Colorado State Fair with "Théâtre D\'opéra Spatial", an image he made with the generator Midjourney and touched up. When he said how it was made, artists were outraged, and the US Copyright Office later refused to register it because it lacked human authorship. The same year DALL-E 2 and Stable Diffusion put image generation in everyone\'s hands, and lawsuits over the pictures they were trained on followed.',
@@ -190,7 +190,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 380, 528, 'PRIMVM PRAEMIVM: ARTES DIGITALES', 11, 'blue']],
   },
   {
-    id: 'chatgpt', year: 2022, w: 900,
+    id: 'chatgpt', year: 2022, w: 900, bg: 'town',
     latin: 'HIC OMNES CVM MACHINA LOQVVNTVR ET DISCIPVLI PENSA NON SCRIBVNT',
     en: 'Here everyone talks with the machine, and the students stop writing their homework.',
     note: 'OpenAI released ChatGPT as a "research preview". It reached a million users in five days and an estimated 100 million in two months, then the fastest-growing consumer app on record. Teachers rethought essays, lawyers were caught citing cases it had invented, and rival chatbots followed within months, among them Google\'s Bard and Anthropic\'s Claude, the model that helped stitch this tapestry.',
@@ -202,7 +202,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['person', 300, { tunic: 'sage', legs: 'blue', hair: 'ochre', pose: 'sit' }], ['text', 520, 528, 'DISCIPVLVS DORMIT', 11, 'rust']],
   },
   {
-    id: 'bard', year: 2023, w: 760,
+    id: 'bard', year: 2023, w: 760, bg: 'night',
     latin: 'HIC BARDVS DE STELLIS ERRAT ET CENTVM MILIARDA EVANESCVNT',
     en: 'Here the bard gets the stars wrong, and a hundred billion vanish.',
     note: 'Racing to answer ChatGPT, Google showed off its chatbot Bard in an advert in which it said the James Webb Space Telescope took the very first pictures of a planet outside our solar system. Astronomers pointed out that the first such picture was taken in 2004 by a telescope in Chile. Shares in Google\'s owner Alphabet fell about 8 per cent that day, roughly $100 billion of market value. Bard was later renamed Gemini.',
@@ -213,7 +213,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 380, 528, 'POSTEA GEMINI APPELLATVR', 11, 'rust']],
   },
   {
-    id: 'spaghetti', year: 2023, w: 820,
+    id: 'spaghetti', year: 2023, w: 820, bg: 'valley',
     latin: 'HIC VILELMVS FABER SPAGHETTOS EDIT, SED NON VERE',
     en: 'Here Will Smith eats spaghetti. But not really.',
     note: 'In March 2023 a Reddit user posted a clip, made with the open text-to-video model ModelScope, of "Will Smith eating spaghetti": a melting face, a fork that became noodles, pasta that ate itself. It became the unofficial benchmark for AI video, remade with every new model. In February 2024 Smith posted a parody of himself eating spaghetti, and the same month OpenAI showed Sora, whose clips were hard to tell from film. By 2025 generated video came with sound and dialogue.',
@@ -226,18 +226,18 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 410, 528, 'FVRCA FIT SPAGHETTVS', 11, 'blue']],
   },
   {
-    id: 'lawyers', year: 2023, w: 740,
+    id: 'lawyers', year: 2023, w: 740, bg: 'hall',
     latin: 'HIC ADVOCATI CAVSAS A MACHINA FICTAS CITANT ET IVDEX IRASCITVR',
     en: 'Here the lawyers cite cases the machine made up, and the judge is cross.',
     note: 'In Mata v. Avianca, a personal-injury suit against an airline in New York, two lawyers filed a brief citing six court decisions that did not exist; ChatGPT had invented them, with plausible names, quotations and page numbers, and assured the lawyer they were real. The judge fined the lawyers and their firm $5,000. It was the first of hundreds of such cases around the world, as courts learned to check citations for hallucinations.',
     src: [['Mata v. Avianca, Inc. (Wikipedia)', 'https://en.wikipedia.org/wiki/Mata_v._Avianca,_Inc.'], ['Hallucination (artificial intelligence) (Wikipedia)', 'https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)']],
-    draw: [['person', 560, { tunic: 'black', legs: 'black', hair: 'grey', pose: 'raise', hold: 'gavel', mood: 'angry', face: -1, s: 1.05 }], ['bench2', 560, { label: 'IVDEX' }],
+    draw: [['person', 560, { tunic: 'black', legs: 'black', hair: 'grey', pose: 'raise', hold: 'gavel', mood: 'angry', face: -1, s: 1.05, outfit: 'robe', headwear: 'wig' }], ['bench2', 560, { label: 'IVDEX' }],
       ['person', 230, { tunic: 'blue', legs: 'grey', hair: 'rust', pose: 'offer', hold: 'paper', tie: 'red', mood: 'happy' }], ['person', 330, { tunic: 'grey', legs: 'blue', hair: 'grey', pose: 'shrug', tie: 'blue', sweat: true, mood: 'shock' }],
       ['screen', 110, { text: 'TRUST ME', s: 0.9 }], ['speech', 430, 330, 'HAEC CAVSA NON EXSTAT'], ['text', 690, 392, '$5000', 11, 'rust']],
     bottom: [['text', 370, 528, 'VARGHESE V. CHINA SOUTHERN: FICTA', 10, 'rust']],
   },
   {
-    id: 'strike', year: 2023, w: 760,
+    id: 'strike', year: 2023, w: 760, bg: 'city',
     latin: 'HIC SCRIPTORES ET HISTRIONES CESSANT NE A MACHINIS REPONANTVR',
     en: 'Here the writers and actors strike, so as not to be replaced by machines.',
     note: 'Hollywood\'s screenwriters went on strike from May to September 2023 and its actors from July to November, the first time both had struck together since 1960. Pay from streaming was the main fight, but so was AI: the writers won rules that studios could not use AI to write or rewrite their scripts, and the actors won consent and payment before a studio could make a digital replica of them.',
@@ -248,7 +248,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 380, 528, 'CXLVIII DIES', 12, 'red']],
   },
   {
-    id: 'bletchley', year: 2023, w: 820,
+    id: 'bletchley', year: 2023, w: 820, bg: 'hills',
     latin: 'HIC PRINCIPES APVD BLETCHLEY CONVIVANT ET DE PERICVLIS DISPVTANT',
     en: 'Here the great and good dine at Bletchley and debate the dangers.',
     note: "Representatives of 28 countries and the EU met at Bletchley Park, where Turing had broken codes in the war, for the first AI Safety Summit, and signed a declaration that frontier AI could cause \"serious, even catastrophic, harm\". The scene borrows the original's feast, where a bishop blesses the food before the battle. Some critics found the focus on far-off risks a distraction from present harms; follow-up summits were held in Seoul and Paris.",
@@ -261,7 +261,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 410, 528, 'ET POST CONVIVIVM, ITERVM IN SEOVL ET PARISIIS', 10, 'blue']],
   },
   {
-    id: 'sacked', year: 2023, w: 880,
+    id: 'sacked', year: 2023, w: 880, bg: 'valley',
     latin: 'HIC SAMVEL EXPELLITVR ET POST QVINQVE DIES REDIT',
     en: 'Here Sam is thrown out, and five days later he is back.',
     note: 'On Friday 17 November 2023 OpenAI\'s board fired its chief executive, Sam Altman, saying he had not been "consistently candid" with it. Over a frantic weekend Microsoft offered him a job, and more than 700 of OpenAI\'s roughly 770 staff signed a letter threatening to quit unless he returned, among them Ilya Sutskever, who had voted to remove him. By the following Wednesday he was reinstated, and most of the board was replaced.',
@@ -274,7 +274,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 440, 528, 'NON SEMPER CANDIDVS', 11, 'rust']],
   },
   {
-    id: 'pizza', year: 2024, w: 760,
+    id: 'pizza', year: 2024, w: 760, bg: 'fields',
     latin: 'HIC MACHINA GLVTEN IN PVLTEM ET LAPIDES IN CIBVM SVADET',
     en: 'Here the machine advises glue on pizza, and a rock a day.',
     note: 'When Google put AI-written answers at the top of its search results, users soon found it recommending about an eighth of a cup of non-toxic glue to keep cheese on pizza, a joke from an eleven-year-old Reddit comment, and eating at least one small rock a day, from an article in the satirical paper The Onion. Google said such answers were rare and came from unusual searches, and cut back where the overviews appeared.',
@@ -286,7 +286,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 380, 528, 'EX REDDIT ET EX CEPA (THE ONION)', 10, 'blue']],
   },
   {
-    id: 'jensen', year: 2024, w: 860,
+    id: 'jensen', year: 2024, w: 860, bg: 'valley',
     latin: 'HIC IENSEN IN TVNICA CORIACEA REX FIT ET OMNES FORNACES EMERE CVPIVNT',
     en: 'Here Jensen in his leather jacket becomes king, and everyone wants to buy his furnaces.',
     note: 'Nvidia\'s graphics chips became the essential tool for training and running AI, and buyers waited months for them. In June 2024 Nvidia briefly became the world\'s most valuable company; in July 2025 it became the first company worth $4 trillion, and that October the first worth $5 trillion. Its co-founder and chief executive Jensen Huang, always in a black leather jacket, became the industry\'s showman, hand-delivering the first new machines to OpenAI and others.',
@@ -299,7 +299,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 430, 528, 'EXSPECTATE: SEX MENSES', 11, 'rust']],
   },
   {
-    id: 'nobel', year: 2024, w: 760,
+    id: 'nobel', year: 2024, w: 760, bg: 'hall',
     latin: 'HIC PRAEMIA NOBELIANA RETIVM MAGISTRIS DANTVR',
     en: 'Here the Nobel prizes go to the masters of the networks.',
     note: 'The Nobel Prize in Physics went to John Hopfield and Geoffrey Hinton for the foundations of machine learning with artificial neural networks; the Chemistry prize went to Demis Hassabis and John Jumper for AlphaFold, shared with David Baker for designing new proteins. Hinton, who had left Google the year before so he could speak freely about the risks, used his acceptance to warn about them.',
@@ -308,7 +308,7 @@ window.TAPESTRY_SCENES = [
       ['person', 500, { name: 'DEMIS', tunic: 'blue', legs: 'grey', hair: 'black', pose: 'stand', hold: 'medal', face: -1, mood: 'happy' }], ['person', 600, { name: 'IVMPER', tunic: 'teal', legs: 'red', hair: 'ochre', pose: 'stand', hold: 'medal', face: -1 }], ['person', 690, { name: 'BAKER', tunic: 'sage', legs: 'blue', hair: 'grey', pose: 'stand', hold: 'medal', face: -1, beard: true }]],
   },
   {
-    id: 'datacentres', year: 2025, w: 900,
+    id: 'datacentres', year: 2025, w: 900, bg: 'fields',
     latin: 'HIC CASTELLA DATORVM AEDIFICANTVR ET FLVMINA ET FVLMINA BIBVNT',
     en: 'Here the castles of data are built, and they drink rivers and lightning.',
     note: 'The great building project of the decade was the data centre. In September 2024 Microsoft agreed to buy all the power from a restarted reactor at Three Mile Island for twenty years; in January 2025 OpenAI, SoftBank and Oracle announced Stargate, a plan to spend up to $500 billion on AI data centres in the United States. Meta, Google, Amazon and xAI raced to build their own, some drawing as much electricity as a city and large amounts of water for cooling.',
@@ -319,7 +319,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 420, 528, 'D MILIARDA DOLLARORVM', 12, 'red']],
   },
   {
-    id: 'deepseek', year: 2025, w: 800,
+    id: 'deepseek', year: 2025, w: 800, bg: 'sea',
     latin: 'HIC BALAENA AB ORIENTE VENIT ET AVRVM MERCATORVM CADIT',
     en: 'Here a whale comes from the east, and the merchants\' gold falls.',
     note: 'The Chinese lab DeepSeek, whose logo is a whale, released R1, an openly published reasoning model that rivalled the best American systems at a reported fraction of the training cost. The next trading day the chipmaker Nvidia lost about $590 billion of market value, the largest one-day fall in US stock-market history, before recovering. Reasoning models, which work through problems step by step before answering, became the new frontier.',
@@ -329,7 +329,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 400, 528, 'POSTRIDIE AVRVM REDIT', 11, 'rust'], ['coins', 620, 522, 3]],
   },
   {
-    id: 'vibes', year: 2025, w: 900,
+    id: 'vibes', year: 2025, w: 900, bg: 'city',
     latin: 'HIC OMNES VIBRATIONE CODICEM SCRIBVNT ET ARTIFICES PAGINARVM DISCEDVNT',
     en: 'Here everyone codes by vibes, and the web designers pack their boxes.',
     note: 'In February 2025 Andrej Karpathy described "vibe coding": describing what you want, accepting whatever the AI writes and never reading the code. By November it was the Collins Dictionary word of the year. Studies found real gains for some work, such as 14 per cent more customer issues resolved per hour in one call centre. Freelance writers and designers saw jobs dry up. Klarna said in 2024 its assistant did the work of 700 customer-service agents; in 2025 it began hiring people again, because customers wanted a human.',
@@ -341,7 +341,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 450, 528, 'VERBVM ANNI: VIBE CODING', 11, 'blue']],
   },
   {
-    id: 'synthetic', year: 2025, w: 900,
+    id: 'synthetic', year: 2025, w: 900, bg: 'city',
     latin: 'HIC CANTORES ET EXEMPLARIA ET AVCTORITATES NVLLI SVNT',
     en: 'Here the singers, the models and the influencers are nobody at all.',
     note: 'The Velvet Sundown, an indie band with more than a million monthly listeners on Spotify in the summer of 2025, admitted it was "a synthetic music project" whose songs, voices and photos were made with AI. In August a Guess advert in Vogue used an AI-generated model, and some readers said they had cancelled their subscriptions. Virtual influencers such as Lil Miquela, a computer-generated nineteen-year-old with millions of followers, had been selling clothes on Instagram since 2016.',
@@ -353,7 +353,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 450, 528, 'QVIS HIC EST? NEMO.', 12, 'red']],
   },
   {
-    id: 'olympiad', year: 2025, w: 820,
+    id: 'olympiad', year: 2025, w: 820, bg: 'sea',
     latin: 'HIC MACHINAE AVRVM IN OLYMPIADE MATHEMATICA CAPIVNT',
     en: 'Here the machines win gold at the Mathematical Olympiad.',
     note: 'At the International Mathematical Olympiad in July 2025, an advanced version of Google DeepMind\'s Gemini, Deep Think, solved five of the six problems in plain written proofs within the contest\'s time limits, scoring 35 out of 42, gold-medal standard; its answers were graded by the competition\'s coordinators. OpenAI announced that an experimental model had reached the same score, graded by former medallists it hired. A year before, AI had managed silver only with problems translated into a formal proof language.',
@@ -364,7 +364,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 410, 528, 'V EX VI PROBLEMATIBVS', 11, 'blue']],
   },
   {
-    id: 'erdos', year: 2025, w: 880,
+    id: 'erdos', year: 2025, w: 880, bg: 'campus',
     latin: 'HIC PROBLEMATA ERDOSIANA SOLVTA CLAMANTVR, SED IAM IN LIBRIS ERANT',
     en: 'Here ten Erdős problems are announced solved, but they were already in the books.',
     note: 'In October 2025 an OpenAI vice-president posted that GPT-5 had "found solutions to 10 (!) previously unsolved Erdős problems". Thomas Bloom, the mathematician who runs the Erdős problems website, replied that this was "a dramatic misrepresentation": the problems were only listed as open because he did not know of the solutions, which GPT-5 had found in existing papers. Demis Hassabis of Google DeepMind answered in three words: "this is embarrassing". The post was deleted. Finding forgotten results in the literature turned out to be useful in its own right.',
@@ -376,7 +376,7 @@ window.TAPESTRY_SCENES = [
     bottom: [['text', 440, 528, 'MATHEMATICI NON RIDENT', 11, 'rust']],
   },
   {
-    id: 'agents', year: 2025, w: 820, divider: true,
+    id: 'agents', year: 2025, w: 820, bg: 'city', divider: true,
     latin: 'HIC MACHINAE PER SE LABORANT ET HOMINES EAS SPECVLANTVR',
     en: 'Here the machines work by themselves, and people watch over them.',
     note: 'By the mid-2020s AI systems were being given tools and set to work on long tasks: writing and running code, browsing, filling in forms, carrying out research for hours with little supervision. The questions moved from what the models know to what they should be allowed to do, and who checks their work. This scene is where the history meets the present, and it will need re-stitching.',
@@ -386,7 +386,7 @@ window.TAPESTRY_SCENES = [
       ['speech', 690, 308, 'WHO CHECKED THIS?']],
   },
   {
-    id: 'unfinished', year: 'MMXXVI', w: 700, divider: false,
+    id: 'unfinished', year: 'MMXXVI', w: 700, bg: 'hills', divider: false,
     latin: 'HIC TELA NONDVM FINITA EST',
     en: 'Here the cloth is not yet finished.',
     note: 'The real tapestry is missing its end: the last scenes were lost, and the stitched edge now stops part-way through the story. This one is unfinished on purpose. New scenes will be added as the history happens. If you think something important is missing, or told unfairly, say so.',

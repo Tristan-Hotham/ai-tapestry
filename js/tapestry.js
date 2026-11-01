@@ -11,6 +11,8 @@
     linen: '#E9DDC1', thread: '#2E2620', red: '#A4452E', rust: '#B9663C', ochre: '#C99A3A', buff: '#D8BF8A',
     sage: '#7D8B55', green: '#4E6040', teal: '#3E6A68', blue: '#2F4766', sky: '#7C97A6', grey: '#8A8172', white: '#F3EBD6',
     black: '#2E2925', pink: '#C98C7C',
+    // skin and hair wools for the faces
+    skin: '#F1E5CB', tan: '#DDB78C', olive: '#C99E74', brown: '#94643F', deep: '#6E4A2E', chestnut: '#6B4A32', silver: '#CFC8B8',
   };
   let svg, defs, uid = 0;
   const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
@@ -36,6 +38,12 @@
         el('line', { x1: 0, y1: 2.5, x2: 4, y2: 2.5, stroke: shade(c, 0.1), 'stroke-width': 0.6, opacity: 0.7 }, p);
       }
     }
+    mailPattern();
+  }
+  function mailPattern() {
+    const p = el('pattern', { id: 'mail', width: 4, height: 3.4, patternUnits: 'userSpaceOnUse' }, defs);
+    el('rect', { width: 4, height: 3.4, fill: '#9A9284' }, p);
+    for (const [cx, cy] of [[1, 1], [3, 2.7]]) el('circle', { cx, cy, r: 1.05, fill: 'none', stroke: '#4A443B', 'stroke-width': 0.55 }, p);
   }
   function shade(hex, k) {
     const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = (n >> 8) & 255, b = n & 255;
@@ -65,33 +73,50 @@
 
   // a person in the Bayeux manner, standing on y=0, facing right: oval head, short tunic, coloured hose
   // pose: stand | point | raise | cheer | sit | walk | lean | carry | type | think
+  // likenesses of the people the cloth names, from their best-known photographs: hair, beard, glasses, skin
+  const LOOKS = {
+    ADA: { outfit: 'gown',  hair: 'black', hstyle: 'ringlets' },
+    CAROLVS: { headwear: 'tophat', outfit: 'suit', tie: 'red',  hair: 'grey', hstyle: 'receding', beard: 'sideburns', age: 1 },
+    TVRING: { outfit: 'suit', tie: 'blue',  hair: 'chestnut', hstyle: 'wavy' },
+    MCCARTHY: { outfit: 'suit', tie: 'red',  hair: 'black', hstyle: 'crop', glasses: true },
+    MINSKY: { outfit: 'suit', tie: 'teal',  hair: 'grey', bald: true, hstyle: 'sides', glasses: 'square' },
+    ROSENBLATT: { outfit: 'labcoat',  hair: 'black', hstyle: 'wavy' },
+    IOSEPH: { outfit: 'suit',  hair: 'grey', hstyle: 'curly', beard: false, moustache: true, age: 1 },
+    LIGHTHILL: { outfit: 'robe', headwear: 'mortar',  hair: 'grey', hstyle: 'receding', glasses: true, age: 1 },
+    GARRY: { outfit: 'suit', tie: 'red',  hair: 'black', hstyle: 'curly' },
+    SAMVEL: {  hair: 'chestnut', hstyle: 'curly' },
+    ELON: {  hair: 'chestnut', hstyle: 'quiff', beard: 'short' },
+    ILYA: { hair: 'black', bald: true, hstyle: 'sides', beard: 'short' },
+    GREG: { hair: 'black', hstyle: 'crop' },
+    'LEE SEDOL': { hair: 'black', hstyle: 'fringe', skin: 'tan' },
+    VILELMVS: { hair: 'black', hstyle: 'crop', skin: 'brown', beard: 'goatee' },
+    'VERVS VILELMVS': { hair: 'black', hstyle: 'crop', skin: 'brown', beard: 'goatee' },
+    IENSEN: {  hair: 'grey', hstyle: 'swept', skin: 'tan' },
+    HOPFIELD: { outfit: 'suit',  hair: 'silver', hstyle: 'receding', glasses: true, beard: false, age: 1 },
+    HINTON: { outfit: 'suit',  hair: 'silver', hstyle: 'swept', age: 1 },
+    DEMIS: {  hair: 'black', hstyle: 'receding', skin: 'olive' },
+    IVMPER: { outfit: 'suit',  hair: 'chestnut', hstyle: 'crop', glasses: true, beard: 'short' },
+    BAKER: {  hair: 'silver', hstyle: 'receding', beard: 'full', glasses: true, age: 1 },
+    THOMAS: { outfit: 'robe',  hair: 'chestnut', hstyle: 'crop', beard: 'full' },
+    MIQVELA: { outfit: 'gown',  hair: 'black', hstyle: 'buns', skin: 'olive', freckles: true },
+  };
+  const VAR = { st: ['cap', 'crop', 'curly', 'wavy', 'cap', 'fringe', 'quiff'], sk: ['skin', 'skin', 'tan', 'skin', 'olive', 'brown', 'skin', 'deep'] };
   function person(p, x, o) {
-    o = Object.assign({ tunic: 'red', legs: 'blue', hair: 'ochre', pose: 'stand', s: 1, face: 1 }, o || {});
+    o = o || {};
+    const look = o.name ? LOOKS[o.name] : null;
+    const hsh = Math.abs(Math.round(x * 7 + (p.childNodes ? p.childNodes.length : 0) * 13));
+    o = Object.assign({ tunic: 'red', legs: 'blue', hair: 'ochre', pose: 'stand', s: 1, face: 1 },
+      look ? {} : { hstyle: VAR.st[hsh % VAR.st.length], skin: VAR.sk[(hsh >> 3) % VAR.sk.length] }, o, look || {});
     const g = grp(p, x, o.y == null ? G : o.y, o.s, o.face < 0);
     if (o.pose === 'fall') g.setAttribute('transform', g.getAttribute('transform') + ' rotate(-22)');
     const sit = o.pose === 'sit' || o.pose === 'type';
     const hip = sit ? -42 : -46, sh = sit ? -80 : -84;
-    // legs
-    if (sit) {
-      P(g, `M-4 ${hip} L14 ${hip + 2} L15 0 L11 0 L10 ${hip + 7} L-6 ${hip + 6} Z`, o.legs, { w: 1.7 });
-      P(g, `M-9 ${hip + 1} L7 ${hip + 4} L8 0 L4 0 L3 ${hip + 9} L-10 ${hip + 7} Z`, o.legs2 || o.legs, { w: 1.7, dir: 'v' });
-    } else {
-      const st = o.pose === 'walk' || o.pose === 'carry' ? 11 : o.pose === 'run' ? 17 : o.pose === 'fall' ? 9 : 5;
-      P(g, `M-5 ${hip} L${-4 - st} -2 L${-st} -2 L1 ${hip + 6} Z`, o.legs, { w: 1.7, dir: 'v' });
-      P(g, `M1 ${hip} L${2 + st} -2 L${6 + st} -2 L6 ${hip + 4} Z`, o.legs2 || o.legs, { w: 1.7, dir: 'v' });
-      P(g, `M${-4 - st} -1 l-6 0`, null, { w: 2.6 }); P(g, `M${6 + st} -1 l7 0`, null, { w: 2.6 });
-      if (o.garters !== false) for (let k = 1; k < 4; k++) { const yy = hip + k * (-hip / 4); const fx = t => -2 + (-st - 2) * t; const t0 = (yy - hip) / -hip;
-        P(g, `M${fx(t0) - 3} ${yy - 3} l6 5 M${fx(t0) + 3} ${yy - 3} l-6 5`, null, { w: 0.8, solid: true, stroke: shade(W[o.legs] || o.legs, -0.45) }); }
-    }
-    // tunic, flared at the hem, with a band at neck and hem
-    P(g, `M-9 ${sh} Q-14 ${hip} -16 ${hip + 6} L16 ${hip + 6} Q13 ${hip} 9 ${sh} Q0 ${sh - 4} -9 ${sh} Z`, o.tunic);
-    P(g, `M-16 ${hip + 2} L16 ${hip + 2}`, null, { w: 1.4, stroke: shade(W[o.tunic] || o.tunic, -0.35) });
-    // a belt and a stitched hem trim, as on the original's tunics
-    if (!o.jacket) { P(g, `M-11 ${hip - 12} Q0 ${hip - 9} 11 ${hip - 12}`, null, { w: 2, solid: true, stroke: shade(W[o.tunic] || o.tunic, -0.45) }); for (let k = -12; k <= 12; k += 6) C(g, k, hip + 3, 1, W.linen, { w: 0.5, solid: true }); }
-    if (o.cloak) P(g, `M-9 ${sh} Q-22 ${sh + 20} -19 ${hip + 2} L-12 ${hip} Q-12 ${sh + 14} -4 ${sh - 2} Z`, o.cloak);
-    if (o.jacket) { P(g, `M-4 ${sh - 1} L2 ${sh + 18} L8 ${sh - 1}`, null, { w: 1.3, solid: true, stroke: W.buff }); P(g, `M-11 ${sh + 8} q4 10 2 20 M12 ${sh + 8} q-4 10 -2 20`, null, { w: 1, stroke: '#7A6E66', solid: true }); P(g, `M-8 ${sh + 30} l-2 6`, null, { w: 1.2, stroke: '#D9CCB4', solid: true }); }
-    if (o.tie) P(g, `M1 ${sh} l-3 4 l3 20 l3 -20 Z`, o.tie, { w: 1 });
-    if (o.hoodie) P(g, `M-10 ${sh + 2} Q-18 ${sh - 14} -8 ${sh - 20}`, null, { w: 3.4, stroke: shade(W[o.tunic] || o.tunic, -0.15), solid: true });
+    // costume: tunic (the original's), gown, robe, mail, suit or lab coat; picked per person, or varied for the crowd
+    const OUT = ['tunic', 'tunic', 'tunic', 'gown', 'mail', 'robe', 'tunic', 'suit', 'tunic', 'gown'];
+    const outfit = o.outfit || (o.jacket ? 'suit' : (o.name ? 'tunic' : OUT[(hsh >> 5) % OUT.length]));
+    if (!o.headwear && !o.name && !o.crown && !o.hat && !o.mitre && (hsh >> 2) % 7 === 0) o.headwear = ['helmet', 'cap', 'beanie', 'hood'][(hsh >> 4) % 4];
+    if (outfit === 'mail' && !o.headwear && !o.crown && (hsh % 2)) o.headwear = 'helmet';
+    const tc = W[o.tunic] || o.tunic, skinC = W[o.skin || 'skin'];
     // arms by pose (shoulder at 0,sh); a = [upper end x,y, hand x,y] for front and back arm
     const A = {
       stand: [[6, sh + 20, 8, sh + 34], [-6, sh + 20, -8, sh + 34]],
@@ -114,40 +139,131 @@
       fall: [[18, sh - 10, 30, sh - 24], [-14, sh - 12, -26, sh - 22]],
       shout: [[18, sh - 6, 32, sh - 20], [-6, sh + 20, -8, sh + 34]],
     }[o.pose] || [[6, sh + 20, 8, sh + 34], [-6, sh + 20, -8, sh + 34]];
-    for (const [i, a] of A.entries()) {
-      const sx = i ? -6 : 6;
-      P(g, `M${sx} ${sh + 2} L${a[0]} ${a[1]} L${a[2]} ${a[3]}`, null, { w: 4.6, stroke: shade(W[o.tunic] || o.tunic, i ? -0.25 : -0.1), solid: true });
-      P(g, `M${sx} ${sh + 2} L${a[0]} ${a[1]} L${a[2]} ${a[3]}`, null, { w: 1.2 });
-      C(g, a[2], a[3], 3, 'white', { w: 1.1 });
+    // an arm as a tapered sleeve (shoulder, elbow, wrist), with a mitten hand and fingers
+    const sleeveCol = outfit === 'mail' ? 'url(#mail)' : outfit === 'labcoat' ? 'white' : o.tunic;
+    const arm = (i, a) => {
+      const sx = i ? -6 : 6, pts = [[sx, sh + 3], [a[0], a[1]], [a[2], a[3]]], wd = [4.2, 3.5, 2.9];
+      const nrm = (p0, p1) => { const dx = p1[0] - p0[0], dy = p1[1] - p0[1], l = Math.hypot(dx, dy) || 1; return [-dy / l, dx / l]; };
+      const n0 = nrm(pts[0], pts[1]), n2 = nrm(pts[1], pts[2]); const n1 = [(n0[0] + n2[0]) / 2, (n0[1] + n2[1]) / 2];
+      const N = [n0, n1, n2], A1 = pts.map((q, k) => [q[0] + N[k][0] * wd[k], q[1] + N[k][1] * wd[k]]), B1 = pts.map((q, k) => [q[0] - N[k][0] * wd[k], q[1] - N[k][1] * wd[k]]);
+      const d = 'M' + A1.map(q => q.join(' ')).join(' L') + ' L' + B1.reverse().map(q => q.join(' ')).join(' L') + ' Z';
+      P(g, d, i ? (outfit === 'mail' ? 'url(#mail)' : shade(tc, -0.22)) : sleeveCol, { w: 1.3, dir: 'v' });
+      if (outfit !== 'mail' && outfit !== 'labcoat') { const cx = a[2] - (a[2] - a[0]) * 0.18, cy = a[3] - (a[3] - a[1]) * 0.18; P(g, `M${cx + N[2][0] * 3.2} ${cy + N[2][1] * 3.2} L${cx - N[2][0] * 3.2} ${cy - N[2][1] * 3.2}`, null, { w: 1.3, solid: true, stroke: shade(tc, -0.45) }); }
+      C(g, a[2], a[3], 3.2, skinC, { w: 1.1 });
       const ang = Math.atan2(a[3] - a[1], a[2] - a[0]);
-      for (const d of [-0.55, 0, 0.55]) P(g, `M${a[2]} ${a[3]} l${5.5 * Math.cos(ang + d)} ${5.5 * Math.sin(ang + d)}`, null, { w: 1.5, solid: true, stroke: W.thread });
+      for (const dd of [-0.55, 0, 0.55]) P(g, `M${a[2]} ${a[3]} l${5.5 * Math.cos(ang + dd)} ${5.5 * Math.sin(ang + dd)}`, null, { w: 1.4, solid: true, stroke: W.thread });
+    };
+    arm(1, A[1]);
+    // legs, with shoes
+    const shoe = o.shoes || (outfit === 'suit' ? 'black' : outfit === 'mail' ? 'grey' : ['black', 'rust', 'black', 'blue'][(hsh >> 6) % 4]);
+    const legC = outfit === 'suit' ? (o.trousers || o.tunic) : outfit === 'labcoat' ? (o.legs || 'blue') : o.legs;
+    if (sit) {
+      P(g, `M-4 ${hip} L14 ${hip + 2} L16 -3 L10 -3 L9 ${hip + 8} L-6 ${hip + 7} Z`, legC, { w: 1.6 });
+      P(g, `M-10 ${hip + 1} L7 ${hip + 4} L9 -3 L3 -3 L2 ${hip + 10} L-11 ${hip + 8} Z`, o.legs2 || legC, { w: 1.6, dir: 'v' });
+      P(g, `M9 -4 L18 -4 Q22 -3 21 0 L9 0 Z`, shoe, { w: 1.2 }); P(g, `M2 -4 L11 -4 Q15 -3 14 0 L2 0 Z`, shoe, { w: 1.2 });
+    } else {
+      const st = o.pose === 'walk' || o.pose === 'carry' ? 11 : o.pose === 'run' ? 17 : o.pose === 'fall' ? 9 : 5;
+      P(g, `M-7 ${hip} Q${-5 - st / 2} ${hip / 2} ${-5 - st} -4 L${1 - st} -4 Q${-1 - st / 3} ${hip / 2} 1 ${hip + 6} Z`, legC, { w: 1.6, dir: 'v' });
+      P(g, `M0 ${hip} Q${3 + st / 2} ${hip / 2} ${1 + st} -4 L${7 + st} -4 Q${5 + st / 3} ${hip / 2} 7 ${hip + 4} Z`, o.legs2 || legC, { w: 1.6, dir: 'v' });
+      P(g, `M${-5 - st} -5 L${2 - st} -5 L${2 - st} 0 L${-12 - st} 0 Q${-12 - st} -4 ${-5 - st} -5 Z`, shoe, { w: 1.2 });
+      P(g, `M${1 + st} -5 L${8 + st} -5 Q${15 + st} -4 ${15 + st} 0 L${1 + st} 0 Z`, shoe, { w: 1.2 });
+      if (o.garters !== false && outfit !== 'suit' && outfit !== 'gown' && outfit !== 'robe' && outfit !== 'labcoat') for (let k = 1; k < 4; k++) { const yy = hip + k * (-hip / 4); const fx = q => -3 + (-st - 1) * q; const t0 = (yy - hip) / -hip;
+        P(g, `M${fx(t0) - 3} ${yy - 3} l6 5 M${fx(t0) + 3} ${yy - 3} l-6 5`, null, { w: 0.8, solid: true, stroke: shade(W[legC] || legC, -0.45) }); }
     }
-    // head: oval, cap of hair, nose to the right, an eye
-    P(g, `M-1 ${sh - 2} l0 -5`, null, { w: 4, stroke: W.white, solid: true });
-    P(g, `M-7 ${sh - 14} Q-8 ${sh - 26} 1 ${sh - 27} Q10 ${sh - 26} 9 ${sh - 15} L11 ${sh - 12} L8 ${sh - 11} Q6 ${sh - 5} 0 ${sh - 5} Q-7 ${sh - 6} -7 ${sh - 14} Z`, 'white');
-    if (o.bald !== true) P(g, `M-8 ${sh - 13} Q-9 ${sh - 28} 1 ${sh - 28} Q9 ${sh - 28} 9 ${sh - 19} Q3 ${sh - 22} -2 ${sh - 19} Q-4 ${sh - 15} -8 ${sh - 13} Z`, o.hair);
-    if (o.long) P(g, `M-8 ${sh - 14} Q-12 ${sh - 2} -6 ${sh + 6} L-2 ${sh - 6} Z`, o.hair);
-    if (o.beard) P(g, `M0 ${sh - 6} Q6 ${sh - 2} 9 ${sh - 10} Q8 ${sh - 4} 2 ${sh - 2} Z`, o.hair);
-    C(g, 4, sh - 17, 0.9, W.thread, { w: 1, solid: true });
-    // a bigger Bayeux nose, a brow, a mouth that shows the mood
-    P(g, `M9 ${sh - 17} L14 ${sh - 12} L9 ${sh - 11}`, 'white', { w: 1.2, solid: true });
+    // the body: shoulders a little wider than the head, then the costume
+    const hem = outfit === 'gown' || outfit === 'robe' ? (sit ? -4 : -3) : outfit === 'labcoat' || outfit === 'mail' ? hip + 22 : outfit === 'suit' ? hip + 2 : hip + 6;
+    const flare = outfit === 'gown' ? 22 : outfit === 'robe' ? 18 : outfit === 'suit' ? 12 : 16;
+    const bodyFill = outfit === 'mail' ? 'url(#mail)' : outfit === 'labcoat' ? 'white' : o.tunic;
+    if (sit && (outfit === 'gown' || outfit === 'robe')) P(g, `M-12 ${sh + 2} Q-14 ${hip} -14 ${hip + 4} L16 ${hip + 2} L18 -4 L4 -4 L3 ${hip + 10} L-12 ${hip + 10} Z`, bodyFill);
+    else P(g, `M-11 ${sh + 1} Q-13 ${sh + 20} -12 ${hip - 8} Q${-flare + 2} ${hip} ${-flare} ${hem} L${flare} ${hem} Q${flare - 2} ${hip} 12 ${hip - 8} Q13 ${sh + 20} 11 ${sh + 1} Q0 ${sh - 4} -11 ${sh + 1} Z`, bodyFill, { dir: outfit === 'gown' ? 'v' : '' });
+    if (outfit === 'mail') { P(g, `M-11 ${sh + 1} Q0 ${sh - 4} 11 ${sh + 1} L9 ${sh + 8} Q0 ${sh + 4} -9 ${sh + 8} Z`, o.tunic, { w: 1.2 }); P(g, `M${-flare} ${hem} L${flare} ${hem}`, null, { w: 2, solid: true, stroke: tc }); }
+    else if (outfit === 'gown') { P(g, `M-10 ${sh + 2} Q0 ${sh + 8} 10 ${sh + 2}`, null, { w: 2, solid: true, stroke: W.ochre }); P(g, `M-11 ${hip - 10} Q0 ${hip - 6} 11 ${hip - 10}`, null, { w: 2.4, solid: true, stroke: shade(tc, -0.4) }); for (let k = -18; k <= 18; k += 6) C(g, k, hem - 3, 1.2, W.ochre, { w: 0.5, solid: true }); }
+    else if (outfit === 'robe') { P(g, `M-4 ${sh} L-2 ${hem}`, null, { w: 4, solid: true, stroke: W.ochre, op: 0.9 }); P(g, `M-11 ${sh + 1} Q-16 ${sh + 8} -12 ${sh + 14}`, null, { w: 3, solid: true, stroke: shade(tc, -0.3) }); }
+    else if (outfit === 'suit') { P(g, `M-3 ${sh} L1 ${sh + 16} L6 ${sh}`, 'white', { w: 1.1, solid: true }); P(g, `M-6 ${sh + 1} L1 ${sh + 20} M8 ${sh + 1} L1 ${sh + 20}`, null, { w: 1.3, solid: true, stroke: shade(tc, -0.5) }); if (!o.jacket) P(g, `M1 ${sh + 2} l-2 3 l2 13 l2 -13 Z`, o.tie || 'red', { w: 0.9 }); for (let k = 0; k < 2; k++) C(g, 3, sh + 24 + k * 6, 0.9, W.thread, { w: 0.6, solid: true }); }
+    else if (outfit === 'labcoat') { L(g, 1, sh + 2, 1, hem, { w: 1, solid: true }); R(g, 4, sh + 14, 6, 5, null, { w: 0.8, solid: true }); L(g, 6, sh + 13, 6, sh + 17, { w: 1.2, solid: true, stroke: W.blue }); }
+    else { P(g, `M-16 ${hip + 2} L16 ${hip + 2}`, null, { w: 1.4, stroke: shade(tc, -0.35) }); }
+    if (outfit === 'tunic' && !o.jacket) { P(g, `M-11 ${hip - 12} Q0 ${hip - 9} 11 ${hip - 12}`, null, { w: 2.2, solid: true, stroke: shade(tc, -0.45) }); C(g, 1, hip - 10.5, 1.6, 'ochre', { w: 0.6, solid: true }); for (let k = -12; k <= 12; k += 6) C(g, k, hip + 3, 1, W.linen, { w: 0.5, solid: true }); P(g, `M-7 ${sh + 1} Q0 ${sh + 7} 7 ${sh + 1}`, null, { w: 1.6, solid: true, stroke: W.ochre }); }
+    if (o.cloak) { P(g, `M-11 ${sh} Q-24 ${sh + 20} -21 ${hip + 2} L-13 ${hip} Q-13 ${sh + 14} -4 ${sh - 2} Z`, o.cloak); C(g, 7, sh + 2, 2.2, 'ochre', { w: 0.8 }); }
+    if (o.jacket) { P(g, `M-4 ${sh - 1} L2 ${sh + 18} L8 ${sh - 1}`, null, { w: 1.3, solid: true, stroke: W.buff }); P(g, `M-11 ${sh + 8} q4 10 2 20 M12 ${sh + 8} q-4 10 -2 20`, null, { w: 1, stroke: '#7A6E66', solid: true }); P(g, `M-8 ${sh + 30} l-2 6`, null, { w: 1.2, stroke: '#D9CCB4', solid: true }); }
+    if (o.tie && outfit !== 'suit') P(g, `M1 ${sh} l-3 4 l3 20 l3 -20 Z`, o.tie, { w: 1 });
+    if (o.hoodie) P(g, `M-10 ${sh + 2} Q-18 ${sh - 14} -8 ${sh - 20}`, null, { w: 3.4, stroke: shade(tc, -0.15), solid: true });
+    arm(0, A[0]);
+    // head, drawn a little larger than the body's scale so the face can carry detail
+    P(g, `M-1 ${sh - 2} l0 -5`, null, { w: 4, stroke: W[o.skin] || W.white, solid: true });
+    const hg = el('g', { transform: `translate(0 ${sh - 4}) scale(1.22) translate(0 ${-(sh - 4)})` }, g);
+    const sk = o.skin || 'skin', hc = W[o.hair] || o.hair, dark = shade(W[sk], -0.42);
+    if (o.hstyle === 'buns') { C(hg, -3, sh - 29, 4.2, o.hair, { w: 1.2 }); C(hg, 6, sh - 30, 4.2, o.hair, { w: 1.2 }); }
+    if (o.hstyle === 'ringlets') C(hg, -9, sh - 18, 4, o.hair, { w: 1.2 });
+    // face: brow, nose, lips, chin, jaw to the ear
+    P(hg, `M-7 ${sh - 14} Q-8 ${sh - 26} 1 ${sh - 27} Q10 ${sh - 26} 9.5 ${sh - 19} L10 ${sh - 17} L14 ${sh - 12} L10 ${sh - 11} L10.5 ${sh - 9} L9 ${sh - 8} L9.5 ${sh - 6.5} Q6 ${sh - 3} 1 ${sh - 4} Q-6 ${sh - 6} -7 ${sh - 14} Z`, sk, { w: 1.6 });
+    // hair
+    const HS = {
+      cap: `M-8 ${sh - 13} Q-9 ${sh - 28} 1 ${sh - 28} Q9 ${sh - 28} 9.5 ${sh - 20} Q3 ${sh - 23} -2 ${sh - 20} Q-4 ${sh - 16} -8 ${sh - 13} Z`,
+      crop: `M-7.6 ${sh - 13} Q-9 ${sh - 28} 1 ${sh - 28} Q8 ${sh - 28} 9.3 ${sh - 22} Q4 ${sh - 24.5} -1 ${sh - 22} Q-4 ${sh - 18} -7.6 ${sh - 13} Z`,
+      curly: `M-8 ${sh - 12} Q-11 ${sh - 18} -8 ${sh - 24} Q-6 ${sh - 31} 0 ${sh - 30} Q5 ${sh - 33} 8 ${sh - 28} Q12 ${sh - 26} 10 ${sh - 21} Q4 ${sh - 24} -1 ${sh - 21} Q-4 ${sh - 17} -8 ${sh - 12} Z`,
+      wavy: `M-8 ${sh - 13} Q-10 ${sh - 26} -2 ${sh - 29} Q6 ${sh - 31} 10 ${sh - 24} Q8 ${sh - 21} 5 ${sh - 23} Q2 ${sh - 21} -1 ${sh - 21} Q-4 ${sh - 17} -8 ${sh - 13} Z`,
+      quiff: `M-8 ${sh - 13} Q-9 ${sh - 28} 0 ${sh - 29} Q6 ${sh - 33} 11 ${sh - 27} Q10 ${sh - 23} 7 ${sh - 23} Q3 ${sh - 23} -1 ${sh - 21} Q-4 ${sh - 17} -8 ${sh - 13} Z`,
+      swept: `M-8 ${sh - 12} Q-12 ${sh - 18} -10 ${sh - 24} L-6 ${sh - 26} L-8 ${sh - 30} L-2 ${sh - 29} L-1 ${sh - 33} L3 ${sh - 30} L6 ${sh - 32} L7 ${sh - 28} Q10 ${sh - 26} 9.5 ${sh - 22} Q4 ${sh - 25} -1 ${sh - 22} Q-4 ${sh - 17} -8 ${sh - 12} Z`,
+      receding: `M-8 ${sh - 12} Q-9.5 ${sh - 27} -1 ${sh - 28} Q4 ${sh - 28} 5 ${sh - 26} Q1 ${sh - 24} -2 ${sh - 19} Q-5 ${sh - 15} -8 ${sh - 12} Z`,
+      sides: `M-8 ${sh - 11} Q-9.5 ${sh - 19} -6 ${sh - 23} Q-3 ${sh - 19} -4 ${sh - 13} Z`,
+      fringe: `M-8 ${sh - 12} Q-10 ${sh - 28} 1 ${sh - 29} Q10 ${sh - 28} 10.5 ${sh - 19} L8.5 ${sh - 19.5} L7 ${sh - 18.5} L5 ${sh - 19.5} Q1 ${sh - 20} -1 ${sh - 19} Q-4 ${sh - 15} -8 ${sh - 12} Z`,
+      ringlets: `M-8 ${sh - 12} Q-10 ${sh - 27} 1 ${sh - 28} Q9 ${sh - 28} 9.5 ${sh - 21} Q5 ${sh - 25.5} 1 ${sh - 24} Q-3 ${sh - 22} -4 ${sh - 16} Q-5 ${sh - 12} -8 ${sh - 12} Z`,
+      buns: `M-8 ${sh - 12} Q-10 ${sh - 28} 1 ${sh - 28} Q10 ${sh - 28} 10.5 ${sh - 19} L8.5 ${sh - 20} L6 ${sh - 19} L3.5 ${sh - 20} Q0 ${sh - 20} -1 ${sh - 19} Q-4 ${sh - 15} -8 ${sh - 12} Z`,
+    };
+    const hs = o.bald === true ? (o.hstyle === 'sides' ? 'sides' : null) : (o.hstyle || 'cap');
+    if (hs && HS[hs]) P(hg, HS[hs], o.hair, { w: 1.5 });
+    if (hs === 'curly') for (let k = 0; k < 5; k++) P(hg, `M${-7 + k * 3.6} ${sh - 26 + Math.abs(k - 2)} q1.6 -2.4 3.2 0`, null, { w: 0.8, solid: true, stroke: shade(hc, -0.4) });
+    if (hs === 'swept' || hs === 'wavy' || hs === 'quiff') for (let k = 0; k < 3; k++) P(hg, `M${6 - k * 4} ${sh - 25 - (k % 2)} Q${1 - k * 4} ${sh - 27} ${-3 - k * 4} ${sh - 22}`, null, { w: 0.7, solid: true, stroke: shade(hc, -0.4) });
+    if (hs === 'ringlets') for (let k = 0; k < 2; k++) P(hg, `M${-6 + k * 3} ${sh - 14} q-2 3 0 5 q2 2 0 5`, null, { w: 2, solid: true, stroke: hc });
+    if (o.long) P(hg, `M-8 ${sh - 14} Q-12 ${sh - 2} -6 ${sh + 6} L-2 ${sh - 6} Z`, o.hair, { w: 1.4 });
+    // headwear
+    const hwr = o.headwear;
+    if (hwr === 'helmet') { P(hg, `M-9 ${sh - 20} Q-8 ${sh - 36} 1 ${sh - 40} Q10 ${sh - 36} 11 ${sh - 20} Z`, 'grey', { w: 1.4, dir: 'v' }); R(hg, -9.5, sh - 22, 21, 3.4, 'ochre', { w: 1 }); R(hg, 8.5, sh - 21, 2.4, 9, 'grey', { w: 0.9 }); }
+    if (hwr === 'cap') { P(hg, `M-8 ${sh - 21} Q-7 ${sh - 33} 2 ${sh - 33} Q10 ${sh - 32} 10 ${sh - 22} Z`, o.hatc || 'red', { w: 1.3 }); P(hg, `M8 ${sh - 23} L18 ${sh - 21} L10 ${sh - 20} Z`, o.hatc || 'red', { w: 1.1 }); }
+    if (hwr === 'beanie') { P(hg, `M-8.5 ${sh - 19} Q-8 ${sh - 34} 1 ${sh - 34} Q10 ${sh - 33} 10 ${sh - 20} Z`, o.hatc || 'teal', { w: 1.3, dir: 'v' }); C(hg, 1, sh - 35, 2.6, 'white', { w: 0.9 }); }
+    if (hwr === 'hood') P(hg, `M-10 ${sh - 6} Q-13 ${sh - 26} -2 ${sh - 32} Q10 ${sh - 33} 11 ${sh - 22} Q4 ${sh - 28} -1 ${sh - 24} Q-6 ${sh - 18} -6 ${sh - 4} Z`, o.hatc || shade(tc, -0.2), { w: 1.3 });
+    if (hwr === 'tophat') { R(hg, -6, sh - 48, 14, 22, 'black', { w: 1.3 }); R(hg, -10, sh - 28, 22, 3, 'black', { w: 1.2 }); R(hg, -6, sh - 32, 14, 3, 'red', { w: 0.8 }); }
+    if (hwr === 'wig') { for (let k = 0; k < 4; k++) { C(hg, -8, sh - 25 + k * 5, 2.8, 'white', { w: 0.8 }); } P(hg, `M-9 ${sh - 24} Q0 ${sh - 34} 10 ${sh - 24} Q2 ${sh - 27} -9 ${sh - 24} Z`, 'white', { w: 1 }); }
+    if (hwr === 'mortar') { P(hg, `M-12 ${sh - 31} L2 ${sh - 35} L16 ${sh - 31} L2 ${sh - 27} Z`, 'black', { w: 1.2 }); P(hg, `M-7 ${sh - 29} L-7 ${sh - 22} Q2 ${sh - 25} 11 ${sh - 22} L11 ${sh - 29}`, 'black', { w: 1 }); P(hg, `M2 ${sh - 31} q8 2 10 10`, null, { w: 1.2, solid: true, stroke: W.ochre }); }
+    if (hwr === 'headphones') { P(hg, `M-5 ${sh - 16} Q-4 ${sh - 34} 4 ${sh - 32}`, null, { w: 2.2, solid: true }); R(hg, -7, sh - 19, 5, 7, 'red', { w: 1 }); }
+    if (hwr === 'chef') { R(hg, -7, sh - 30, 16, 8, 'white', { w: 1.1 }); C(hg, -3, sh - 34, 5, 'white', { w: 1 }); C(hg, 5, sh - 34, 5, 'white', { w: 1 }); }
+    // ear
+    P(hg, `M-3.5 ${sh - 18} q-3.2 0.5 -2.6 4.5 q0.6 2.5 2.8 1.8`, sk, { w: 1.1, solid: true });
+    P(hg, `M-4.2 ${sh - 16.5} q-1 1.2 0 2.4`, null, { w: 0.6, solid: true, stroke: dark });
+    // beard
+    const bd = o.beard === true ? 'full' : o.beard;
+    if (bd === 'full') P(hg, `M-3 ${sh - 13} Q-4 ${sh - 5} 1 ${sh - 3} Q7 ${sh - 2} 10 ${sh - 7} L9 ${sh - 9.5} Q6 ${sh - 7} 3 ${sh - 9} Q0 ${sh - 9} -1 ${sh - 13} Z`, o.beardColor || o.hair, { w: 1.2 });
+    if (bd === 'short') for (let k = 0; k < 9; k++) C(hg, -2 + k * 1.3, sh - 9 + Math.abs(k - 5) * -0.55 + 3.2, 0.45, null, { w: 0.9, solid: true, stroke: hc });
+    if (bd === 'goatee') P(hg, `M5 ${sh - 6} Q8 ${sh - 3} 10 ${sh - 6.5} L9.5 ${sh - 8} Q7 ${sh - 7} 5 ${sh - 6} Z`, o.beardColor || o.hair, { w: 0.9 });
+    if (bd === 'sideburns') P(hg, `M-2 ${sh - 18} Q-3 ${sh - 10} 1 ${sh - 7} L2 ${sh - 9} Q0 ${sh - 12} 0 ${sh - 18} Z`, o.beardColor || o.hair, { w: 1 });
+    // eye: an almond of white with a dark pupil, lid line, and a brow in the hair's colour
     const mood = o.mood || '';
-    if (mood === 'angry') P(g, `M1 ${sh - 22} L7 ${sh - 19}`, null, { w: 1.6, solid: true });
-    else if (mood === 'shock' || mood === 'shout') P(g, `M1 ${sh - 23} Q4 ${sh - 26} 7 ${sh - 23}`, null, { w: 1.2, solid: true });
-    else P(g, `M1 ${sh - 21} L7 ${sh - 21}`, null, { w: 0.9, solid: true });
-    if (mood === 'happy') P(g, `M3 ${sh - 9} Q6 ${sh - 6} 9 ${sh - 9}`, null, { w: 1.1, solid: true });
-    else if (mood === 'angry' || mood === 'sad') P(g, `M3 ${sh - 7} Q6 ${sh - 10} 9 ${sh - 7}`, null, { w: 1.1, solid: true });
-    else if (mood === 'shock' || mood === 'shout') C(g, 7, sh - 8, mood === 'shout' ? 2.6 : 1.8, 'red', { w: 0.9, solid: true });
-    if (o.melt) { for (let k = 0; k < 4; k++) P(g, `M${-4 + k * 4} ${sh - 6} q${k % 2 ? 2 : -2} 6 0 ${8 + k * 3}`, null, { w: 1.6, stroke: W.ochre, solid: true }); P(g, `M-7 ${sh - 14} q-4 6 -2 12`, null, { w: 1.4, stroke: W.white, solid: true }); C(g, -2, sh - 18, 1.2, W.thread, { w: 1, solid: true }); }
-    if (o.moustache) P(g, `M5 ${sh - 10} Q9 ${sh - 12} 12 ${sh - 8}`, null, { w: 1.8, solid: true, stroke: W[o.hair] || o.hair });
-    if (o.glasses) { C(g, 5, sh - 17, 3.2, null, { w: 1, solid: true }); L(g, -4, sh - 18, 2, sh - 17, { w: 0.9, solid: true }); }
-    if (o.norman) P(g, `M-8 ${sh - 13} Q-9 ${sh - 20} -6 ${sh - 24}`, null, { w: 2.6, stroke: W.white, solid: true });
+    P(hg, `M2.2 ${sh - 17.2} Q4.8 ${sh - 19.6} 7.4 ${sh - 17.2} Q4.8 ${sh - 15.6} 2.2 ${sh - 17.2} Z`, '#FBF6EA', { w: 0.8, solid: true });
+    C(hg, mood === 'shock' || mood === 'shout' ? 4.8 : 5.4, sh - 17.3, 1.15, W.thread, { w: 0.6, solid: true });
+    const bc = hs && o.hair !== 'silver' && o.hair !== 'white' ? shade(hc, -0.3) : W.thread;
+    if (mood === 'angry') P(hg, `M1.5 ${sh - 22} L7.8 ${sh - 19.2}`, null, { w: 1.5, solid: true, stroke: bc });
+    else if (mood === 'shock' || mood === 'shout') P(hg, `M1.5 ${sh - 22.5} Q4.7 ${sh - 25} 7.8 ${sh - 22}`, null, { w: 1.2, solid: true, stroke: bc });
+    else if (mood === 'sad') P(hg, `M1.5 ${sh - 20.2} L7.8 ${sh - 22}`, null, { w: 1.2, solid: true, stroke: bc });
+    else P(hg, `M1.5 ${sh - 20.8} Q4.7 ${sh - 22.2} 7.8 ${sh - 20.8}`, null, { w: 1.2, solid: true, stroke: bc });
+    if (o.age) P(hg, `M2 ${sh - 14.5} q2.5 1 5 0 M1.5 ${sh - 23.5} l4 0`, null, { w: 0.5, solid: true, stroke: dark });
+    // nostril, cheek, lips
+    P(hg, `M11 ${sh - 12.6} q-1.2 0.4 -1.6 -0.8`, null, { w: 0.7, solid: true, stroke: dark });
+    C(hg, 5.2, sh - 11.5, 2.1, '#D9826A', { w: 0.1, solid: true, op: 0.45, stroke: 'none' });
+    if (mood === 'happy') P(hg, `M6 ${sh - 8.6} Q8.4 ${sh - 6.4} 10.2 ${sh - 8.4}`, null, { w: 1.1, solid: true, stroke: '#8E3A2A' });
+    else if (mood === 'angry' || mood === 'sad') P(hg, `M6 ${sh - 7.2} Q8 ${sh - 9.2} 10.2 ${sh - 7.6}`, null, { w: 1.1, solid: true, stroke: '#8E3A2A' });
+    else if (mood === 'shock' || mood === 'shout') P(hg, `M7.2 ${sh - 9.5} a1.9 ${mood === 'shout' ? 2.6 : 1.9} 0 1 0 0.1 0 Z`, '#8E3A2A', { w: 0.9, solid: true });
+    else P(hg, `M6.5 ${sh - 8.2} Q8.3 ${sh - 7.6} 10.2 ${sh - 8.2}`, null, { w: 1, solid: true, stroke: '#8E3A2A' });
+    if (o.freckles) for (const [fx, fy] of [[4, -12.5], [6.5, -13], [5.5, -11]]) C(hg, fx, sh + fy, 0.35, null, { w: 0.8, solid: true, stroke: dark });
+    if (o.melt) { for (let k = 0; k < 4; k++) P(hg, `M${-4 + k * 4} ${sh - 6} q${k % 2 ? 2 : -2} 6 0 ${8 + k * 3}`, null, { w: 1.6, stroke: W.ochre, solid: true }); P(hg, `M-7 ${sh - 14} q-4 6 -2 12`, null, { w: 1.4, stroke: W[sk], solid: true }); C(hg, -2, sh - 18, 1.2, W.thread, { w: 1, solid: true }); }
+    if (o.moustache) P(hg, `M6 ${sh - 9.6} Q9 ${sh - 11.4} 11.6 ${sh - 9}`, null, { w: 2.2, solid: true, stroke: W[o.hair] || o.hair });
+    if (o.glasses) { if (o.glasses === 'square') R(hg, 1.4, sh - 20, 7.6, 5.4, null, { w: 1, solid: true }); else C(hg, 5, sh - 17.3, 3.4, null, { w: 1, solid: true }); L(hg, -3.5, sh - 18.4, 1.4, sh - 17.6, { w: 0.9, solid: true }); }
+    if (o.norman) P(hg, `M-8 ${sh - 13} Q-9 ${sh - 20} -6 ${sh - 24}`, null, { w: 2.6, stroke: W.white, solid: true });
     if (o.sweat) for (let k = 0; k < 3; k++) P(g, `M${-12 - k * 4} ${sh - 24 + k * 6} q-2 4 0 6`, null, { w: 1.1, stroke: W.sky, solid: true });
     if (o.steam) for (let k = 0; k < 3; k++) P(g, `M${-6 + k * 8} ${sh - 32} q-4 -6 0 -12 q4 -6 0 -12`, null, { w: 1.3, stroke: W.grey, solid: true });
     if (o.hearts) for (let k = 0; k < 3; k++) P(g, `M${16 + k * 9} ${sh - 30 - k * 8} l-3 -3 a2 2 0 0 1 3 -3 a2 2 0 0 1 3 3 Z`, 'red', { w: 0.8, solid: true });
-    if (o.crown) P(g, `M-7 ${sh - 27} l2 -8 l3 5 l3 -7 l3 7 l3 -5 l1 8 Z`, 'ochre', { w: 1.4 });
-    if (o.hat) P(g, `M-9 ${sh - 25} Q1 ${sh - 40} 11 ${sh - 25} Z`, o.hat, { w: 1.4 });
-    if (o.mitre) P(g, `M-6 ${sh - 26} L-2 ${sh - 42} L2 ${sh - 33} L6 ${sh - 42} L9 ${sh - 26} Z`, o.mitre, { w: 1.4 });
+    if (o.crown) P(hg, `M-7 ${sh - 28} l2 -8 l3 5 l3 -7 l3 7 l3 -5 l1 8 Z`, 'ochre', { w: 1.4 });
+    if (o.hat) P(hg, `M-9 ${sh - 25} Q1 ${sh - 40} 11 ${sh - 25} Z`, o.hat, { w: 1.4 });
+    if (o.mitre) P(hg, `M-6 ${sh - 26} L-2 ${sh - 42} L2 ${sh - 33} L6 ${sh - 42} L9 ${sh - 26} Z`, o.mitre, { w: 1.4 });
     // what they hold, in the front hand
     const hx = A[0][2], hy = A[0][3];
     if (o.hold === 'scroll') { R(g, hx - 2, hy - 18, 8, 22, 'white', { w: 1.3 }); for (let k = 0; k < 4; k++) L(g, hx, hy - 13 + k * 4, hx + 4, hy - 13 + k * 4, { w: 0.8 }); }
@@ -171,7 +287,7 @@
     if (o.hold === 'gavel') { L(g, hx, hy, hx + 8, hy - 14, { w: 2.2 }); R(g, hx + 2, hy - 22, 14, 7, 'rust', { w: 1.1 }); }
     if (o.hold === 'brush') { L(g, hx, hy, hx + 10, hy - 18, { w: 1.6 }); C(g, hx + 11, hy - 20, 2.2, 'red', { w: 0.8 }); }
     // the name stitched above the head, as the original names its people
-    if (o.name) T(g.parentNode, 0, 0, o.name, o.nameSize || 10.5, o.nameColor || 'red', { ls: 1.2, halo: true, transformFrom: g, dy: sh - 36 - (o.crown ? 10 : 0) - (o.hat || o.mitre ? 12 : 0) });
+    if (o.name) T(g.parentNode, 0, 0, o.name, o.nameSize || 10.5, o.nameColor || 'red', { ls: 1.2, halo: true, transformFrom: g, dy: sh - 40 - (o.crown ? 11 : 0) - (o.hstyle === 'buns' || o.hstyle === 'swept' || o.hstyle === 'curly' ? 4 : 0) - (o.hat || o.mitre || o.headwear ? (o.headwear === 'tophat' ? 22 : 12) : 0) });
     return g;
   }
 
@@ -315,6 +431,88 @@
     tower(p, x, o) { const g = grp(p, x, G, (o && o.s) || 1); P(g, 'M-34 0 Q-18 -60 -24 -120 L24 -120 Q18 -60 34 0 Z', 'buff', { dir: 'v' }); for (let k = 0; k < 3; k++) P(g, `M${-12 + k * 12} -126 q-10 -14 0 -26 q10 -12 0 -26`, null, { w: 2.4, stroke: W.white, solid: true }); return g; },
   };
 
+
+  // ---------------- scenery: a location behind each scene (hills, a town, a campus, a city, the valley, sea, snow,
+  // fields), stitched paler and smaller so the figures stay in front, with people and animals in the distance
+  const HZ = G - 64;   // the horizon, about chest height on the figures
+  const mini = {
+    tree(g, x, y, s, c) { const q = grp(g, x, y, s); P(q, 'M-2 0 L-1 -22 L1 -22 L2 0 Z', 'rust', { w: 0.9 }); P(q, 'M0 -18 Q-14 -22 -10 -34 Q-12 -46 0 -48 Q12 -46 10 -34 Q14 -22 0 -18 Z', c || 'sage', { w: 1 }); P(q, 'M-4 -30 q4 -4 8 0 M-3 -38 q3 -3 6 0', null, { w: 0.7, solid: true, stroke: W.green }); },
+    pine(g, x, y, s) { const q = grp(g, x, y, s); P(q, 'M0 -50 L12 -16 L4 -16 L14 0 L-14 0 L-4 -16 L-12 -16 Z', 'green', { w: 1 }); },
+    palm(g, x, y, s) { const q = grp(g, x, y, s); P(q, 'M-1 0 Q2 -24 -2 -46 L1 -46 Q6 -24 2 0 Z', 'rust', { w: 0.9 }); for (const d of [-1, 1]) { P(q, `M0 -46 Q${d * 12} -56 ${d * 22} -44 Q${d * 12} -50 0 -46 Z`, 'green', { w: 0.9 }); P(q, `M0 -46 Q${d * 8} -50 ${d * 16} -36 Q${d * 6} -44 0 -46 Z`, 'sage', { w: 0.9 }); } },
+    house(g, x, y, s, c, roof) { const q = grp(g, x, y, s); R(q, -14, -22, 28, 22, c || 'buff', { w: 1, dir: 'h' }); P(q, 'M-18 -22 L0 -38 L18 -22 Z', roof || 'red', { w: 1, dir: 'v' }); P(q, 'M-4 0 v-10 a4 4 0 0 1 8 0 v10', 'blue', { w: 0.8 }); R(q, 6, -36, 4, 8, 'grey', { w: 0.7 }); },
+    tower(g, x, y, s, c) { const q = grp(g, x, y, s); R(q, -9, -56, 18, 56, c || 'buff', { w: 1, dir: 'v' }); P(q, 'M-12 -56 L0 -74 L12 -56 Z', 'teal', { w: 1 }); for (let k = 0; k < 3; k++) P(q, `M-3 ${-46 + k * 14} v-6 a3 3 0 0 1 6 0 v6`, 'blue', { w: 0.7 }); },
+    spire(g, x, y, s) { const q = grp(g, x, y, s); R(q, -7, -40, 14, 40, 'buff', { w: 1, dir: 'v' }); P(q, 'M-7 -40 L0 -78 L7 -40 Z', 'grey', { w: 1 }); L(q, 0, -78, 0, -86, { w: 0.8, solid: true }); },
+    block(g, x, y, s, h, c) { const q = grp(g, x, y, s); R(q, -12, -h, 24, h, c || 'grey', { w: 1, dir: 'v' }); for (let r = 0; r < Math.floor(h / 10) - 1; r++) for (let k = 0; k < 3; k++) R(q, -9 + k * 7, -h + 5 + r * 10, 4, 5, (r + k) % 3 ? 'sky' : 'ochre', { w: 0.4, solid: true }); },
+    glass(g, x, y, s) { const q = grp(g, x, y, s); P(q, 'M-26 0 L-26 -20 Q0 -30 26 -20 L26 0 Z', 'sky', { w: 1, dir: 'h' }); for (let k = -18; k <= 18; k += 9) L(q, k, -24, k, 0, { w: 0.6, solid: true }); },
+    sheep(g, x, y, s, f) { const q = grp(g, x, y, s, f); P(q, 'M-10 -4 Q-12 -14 -2 -14 Q8 -16 10 -8 Q10 -2 -10 -4 Z', 'white', { w: 1 }); P(q, 'M9 -11 L14 -9 L12 -5 L8 -6 Z', 'black', { w: 0.8 }); for (const lx of [-6, 5]) L(q, lx, -3, lx, 3, { w: 1.4, solid: true }); },
+    horse(g, x, y, s, f, c) { const q = grp(g, x, y, s, f); P(q, 'M-16 -14 Q-16 -24 -4 -24 L10 -24 Q14 -36 22 -34 L24 -28 L18 -26 Q18 -16 12 -14 Z', c || 'rust', { w: 1, dir: 'h' }); for (const lx of [-12, -6, 6, 12]) L(q, lx, -15, lx + (lx % 4), 0, { w: 1.6, solid: true }); P(q, 'M-16 -20 q-8 2 -8 12', null, { w: 1.4, solid: true }); },
+    dog(g, x, y, s, f) { const q = grp(g, x, y, s, f); P(q, 'M-10 -6 Q-10 -12 0 -12 L8 -12 L10 -18 L14 -16 L14 -10 Q12 -6 8 -6 Z', 'ochre', { w: 1 }); for (const lx of [-8, -4, 4, 8]) L(q, lx, -7, lx, 0, { w: 1.3, solid: true }); P(q, 'M-10 -10 q-6 -2 -6 -8', null, { w: 1.2, solid: true }); },
+    bird(g, x, y, s) { P(g, `M${x - 6 * s} ${y} q${3 * s} ${-4 * s} ${6 * s} 0 q${3 * s} ${-4 * s} ${6 * s} 0`, null, { w: 1.1, solid: true }); },
+    boat(g, x, y, s, f) { const q = grp(g, x, y, s, f); P(q, 'M-20 -4 L20 -4 L14 4 L-14 4 Z', 'rust', { w: 1 }); L(q, 0, -4, 0, -30, { w: 1.2 }); P(q, 'M1 -28 Q16 -18 14 -6 L1 -6 Z', 'white', { w: 1 }); },
+    cloud(g, x, y, s) { P(g, `M${x - 20 * s} ${y} q${4 * s} ${-10 * s} ${12 * s} ${-6 * s} q${6 * s} ${-10 * s} ${16 * s} ${-2 * s} q${10 * s} ${-2 * s} ${10 * s} ${8 * s} Z`, 'white', { w: 0.9, op: 0.8 }); },
+    tuft(g, x, y, c) { P(g, `M${x - 3} ${y} l-2 -6 M${x} ${y} l0 -8 M${x + 3} ${y} l2 -6`, null, { w: 1, solid: true, stroke: W[c] || W.green }); },
+    flower(g, x, y, c) { L(g, x, y, x, y - 7, { w: 0.9, solid: true, stroke: W.green }); C(g, x, y - 9, 2, c || 'red', { w: 0.6, solid: true }); },
+  };
+  function scenery(gd, s, idx) {
+    const kind = s.bg; if (!kind || kind === 'none') return;
+    const w = s.w, g = el('g', { class: 'scenery', opacity: kind === 'night' ? 0.85 : 0.72 }, gd);
+    let rs = (idx + 1) * 9301; const rnd = () => { rs = (rs * 9301 + 49297) % 233280; return rs / 233280; };
+    // the occupied ground, so distant figures stand in the gaps
+    const occ = (s.draw || []).filter(d => typeof d[1] === 'number' && d[0] !== 'text' && d[0] !== 'speech' && d[0] !== 'banner').map(d => d[1]);
+    const free = []; for (let x = 30; x < w - 30; x += 10) if (occ.every(o => Math.abs(o - x) > 46)) free.push(x);
+    const pick = n => { const out = []; let last = -999; for (const x of free) if (x - last > 70 && out.length < n) { out.push(x); last = x; } return out; };
+    const hill = (y, amp, c, op) => { const n = Math.max(2, Math.round(w / 60)), st = w / n; let d = `M0 ${G} L0 ${y}`; for (let k = 0; k < n; k++) d += ` Q${k * st + st / 2} ${y - amp * (0.5 + rnd())} ${(k + 1) * st} ${y}`; d += ` L${w} ${G} Z`; P(g, d, c, { w: 1.1, op: op || 1, dir: 'h' }); };
+    const sky = () => { for (let k = 0; k < 2; k++) mini.cloud(g, 60 + rnd() * (w - 120), HZ - 30 - rnd() * 24, 0.8 + rnd() * 0.4); for (let k = 0; k < 3; k++) mini.bird(g, 40 + rnd() * (w - 80), HZ - 22 - rnd() * 36, 0.9 + rnd() * 0.5); };
+    const folk = (n, opts) => { pick(n).forEach((x, k) => { const r = (rnd() * 6) | 0; const kind2 = (opts && opts.animals) ? opts.animals[r % opts.animals.length] : null;
+      if (kind2 && r % 2) mini[kind2](g, x, HZ + 2, 0.75, r % 3 ? 1 : -1);
+      else person(g, x, { y: HZ + 2, s: 0.4, face: r % 2 ? 1 : -1, tunic: ['red', 'teal', 'ochre', 'sage', 'blue', 'rust'][r], legs: ['blue', 'rust', 'teal', 'ochre'][r % 4], hair: ['black', 'chestnut', 'ochre', 'grey'][r % 4], pose: ['walk', 'stand', 'point', 'carry', 'wave', 'walk'][r], hold: (opts && opts.hold) ? opts.hold[r % opts.hold.length] : null, garters: false }); }); };
+    const ground = (c, extra) => { for (let x = 10; x < w; x += 22 + rnd() * 18) { if (extra === 'flowers' && rnd() < 0.35) mini.flower(g, x, G, ['red', 'ochre', 'white', 'blue'][(rnd() * 4) | 0]); else mini.tuft(g, x, G, c); } };
+    if (kind === 'hills' || kind === 'night') {
+      if (kind === 'night') { for (let k = 0; k < 14; k++) things.star(g, 20 + rnd() * (w - 40), HZ - 10 - rnd() * 60, 0.35 + rnd() * 0.25); P(g, `M${w - 70} ${HZ - 64} a12 12 0 1 0 8 22 a9 9 0 1 1 -8 -22 Z`, 'white', { w: 1 }); } else sky();
+      hill(HZ - 6, 22, 'sage', 0.55); hill(HZ + 10, 14, 'green', 0.35);
+      for (let k = 0; k < 4; k++) mini.tree(g, 30 + rnd() * (w - 60), HZ + 4, 0.8 + rnd() * 0.4, k % 2 ? 'green' : 'sage');
+      folk(3, { animals: ['sheep', 'horse', 'sheep'] }); ground('green', 'flowers');
+    } else if (kind === 'town') {
+      sky(); hill(HZ + 4, 8, 'sage', 0.35);
+      for (let x = 20; x < w; x += 46 + rnd() * 30) { const r = rnd(); if (r < 0.2) mini.tower(g, x, HZ + 4, 0.9 + rnd() * 0.3); else if (r < 0.32) mini.spire(g, x, HZ + 4, 1); else mini.house(g, x, HZ + 4, 0.8 + rnd() * 0.4, ['buff', 'white', 'ochre', 'buff'][(rnd() * 4) | 0], rnd() < 0.5 ? 'red' : 'rust'); }
+      folk(3, { animals: ['dog', 'horse'] }); for (let x = 6; x < w; x += 14) P(g, `M${x} ${G - 1} q5 -4 10 0`, null, { w: 0.8, solid: true, stroke: W.grey });
+    } else if (kind === 'campus') {
+      sky(); hill(HZ + 4, 6, 'sage', 0.4);
+      for (let x = 30; x < w; x += 90 + rnd() * 40) { mini.tower(g, x, HZ + 4, 1.1, 'buff'); mini.house(g, x + 34, HZ + 4, 1, 'buff', 'teal'); }
+      for (let k = 0; k < 3; k++) mini.tree(g, 40 + rnd() * (w - 80), HZ + 4, 0.9);
+      folk(3, { hold: ['book', 'scroll', null] }); ground('green');
+    } else if (kind === 'city') {
+      sky(); for (let x = 10; x < w; x += 26 + rnd() * 14) mini.block(g, x, HZ + 6, 1, 30 + rnd() * 50, ['grey', 'blue', 'buff', 'teal', 'grey'][(rnd() * 5) | 0]);
+      folk(3, { hold: ['phone', 'laptop', null, 'cup'], animals: ['dog'] }); for (let x = 0; x < w; x += 30) L(g, x, G - 1, x + 16, G - 1, { w: 1, solid: true, stroke: W.ochre });
+    } else if (kind === 'valley') {
+      mini.cloud(g, w * 0.3, HZ - 40, 1.1); things.sun(g, w - 70, HZ - 44);
+      hill(HZ - 10, 30, 'buff', 0.6); hill(HZ + 6, 12, 'sage', 0.4);
+      for (let x = 40; x < w; x += 110 + rnd() * 60) { mini.glass(g, x, HZ + 6, 1); mini.palm(g, x + 44, HZ + 6, 0.9); }
+      folk(3, { hold: ['phone', 'laptop', 'cup'], animals: ['dog'] }); ground('ochre');
+    } else if (kind === 'sea') {
+      sky(); hill(HZ - 4, 14, 'sage', 0.4);
+      R(g, 0, HZ + 4, w, G - HZ - 22, 'sky', { w: 0, op: 0.45, stroke: 'none', dir: 'h' });
+      for (let r = 0; r < 3; r++) for (let x = (r % 2) * 20; x < w; x += 40) P(g, `M${x} ${HZ + 12 + r * 12} q10 -6 20 0`, null, { w: 1, solid: true, stroke: W.teal });
+      mini.boat(g, w * 0.2 + rnd() * 60, HZ + 18, 0.9); mini.boat(g, w * 0.75, HZ + 22, 0.7, -1); mini.house(g, 30, HZ + 2, 0.8, 'white', 'red');
+      for (let x = 10; x < w; x += 40) P(g, `M${x} ${G - 1} q4 -3 8 0`, null, { w: 0.8, solid: true, stroke: W.ochre });
+    } else if (kind === 'snow') {
+      hill(HZ - 4, 26, 'white', 0.9); hill(HZ + 10, 14, 'white', 0.7);
+      for (let k = 0; k < 5; k++) mini.pine(g, 30 + rnd() * (w - 60), HZ + 6, 0.8 + rnd() * 0.4);
+      folk(2, {}); for (let k = 0; k < 10; k++) things.flake(g, 20 + rnd() * (w - 40), HZ - 66 + rnd() * 60, 0.35);
+      for (let x = 10; x < w; x += 30) P(g, `M${x} ${G} q8 -6 16 0`, 'white', { w: 0.8, solid: true });
+    } else if (kind === 'fields') {
+      sky(); things.sun(g, 60, HZ - 44);
+      for (let k = 0; k < 4; k++) { const x0 = k * w / 4; P(g, `M${Math.max(0, x0 - 10)} ${HZ + 6} L${Math.min(w, x0 + w / 4 + 10)} ${HZ + 6} L${Math.min(w, x0 + w / 4 + 20)} ${G - 16} L${Math.max(0, x0 - 20)} ${G - 16} Z`, ['ochre', 'sage', 'buff', 'green'][k], { w: 1, op: 0.45, dir: k % 2 ? 'v' : 'h' }); }
+      mini.house(g, w * 0.15, HZ + 6, 0.8, 'rust', 'red'); things.pylon(g, w * 0.88, { s: 0.5 }); for (const tr of [0.4, 0.62]) mini.tree(g, w * tr, HZ + 6, 0.8);
+      folk(2, { animals: ['horse', 'sheep'], hold: ['staff'] }); ground('green', 'flowers');
+    } else if (kind === 'hall') {
+      // indoors: an arcade of round arches, hangings and lamps
+      for (let x = 20; x < w; x += 70) { P(g, `M${x} ${G} L${x} ${HZ - 50} a35 35 0 0 1 70 0 L${x + 70} ${G}`, null, { w: 1.8, stroke: W.rust }); R(g, x - 4, HZ - 50, 8, G - HZ + 50, 'buff', { w: 1, dir: 'v' }); }
+      for (let x = 55; x < w; x += 140) { L(g, x, HZ - 84, x, HZ - 66, { w: 0.9, solid: true }); C(g, x, HZ - 62, 4, 'ochre', { w: 0.9 }); }
+      for (let x = 0; x < w; x += 24) R(g, x, G - 3, 12, 3, (x / 24) % 2 ? 'rust' : 'buff', { w: 0.5, solid: true });
+    }
+  }
+
   // margin creatures for the borders: pairs of birds and beasts, as in the original's borders
   function beast(p, x, y, k, face) {
     const g = grp(p, x, y, 1.35, face < 0);
@@ -356,6 +554,7 @@
       }
       T(g, sw - 6, BOT - 10, String(s.year), 15, 'rust', { anchor: 'end', ls: 1 });
       const gd = el('g', { transform: `translate(0 ${G}) scale(${SC}) translate(0 ${-G})` }, g);
+      scenery(gd, s, i);
       for (const it of s.draw || []) {
         const [fn, ...a] = it;
         if (fn === 'person') person(gd, a[0], a[1]);
