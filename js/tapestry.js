@@ -10,6 +10,7 @@
   const W = {
     linen: '#E9DDC1', thread: '#2E2620', red: '#A4452E', rust: '#B9663C', ochre: '#C99A3A', buff: '#D8BF8A',
     sage: '#7D8B55', green: '#4E6040', teal: '#3E6A68', blue: '#2F4766', sky: '#7C97A6', grey: '#8A8172', white: '#F3EBD6',
+    black: '#2E2925', pink: '#C98C7C',
   };
   let svg, defs, uid = 0;
   const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
@@ -54,6 +55,7 @@
   const R = (g, x, y, w, h, c, o) => P(g, `M${x} ${y} h${w} v${h} h${-w} Z`, c, o);
   const T = (g, x, y, s, size, col, o) => {
     o = o || {};
+    if (o.transformFrom) { const m = /translate\(([-\d.e]+) ([-\d.e]+)\)(?: scale\(-1 1\))?(?: scale\(([-\d.e]+)\))?/.exec(o.transformFrom.getAttribute('transform')); const sc = m && m[3] ? +m[3] : 1; x = (m ? +m[1] : 0) + x; y = (m ? +m[2] : 0) + o.dy * sc; size = size * Math.max(0.75, sc); }
     const t = el('text', { x, y, 'font-family': o.font || "'Cinzel', 'Trajan Pro', serif", 'font-size': size, fill: W[col] || col || W.blue,
       'text-anchor': o.anchor || 'middle', 'letter-spacing': o.ls == null ? 2 : o.ls, 'font-weight': o.bold ? 700 : 600, filter: 'url(#wool)', opacity: o.op || 1 }, g);
     if (o.halo) { t.setAttribute('stroke', W.linen); t.setAttribute('stroke-width', 6); t.setAttribute('paint-order', 'stroke'); t.setAttribute('stroke-linejoin', 'round'); }
@@ -66,6 +68,7 @@
   function person(p, x, o) {
     o = Object.assign({ tunic: 'red', legs: 'blue', hair: 'ochre', pose: 'stand', s: 1, face: 1 }, o || {});
     const g = grp(p, x, o.y == null ? G : o.y, o.s, o.face < 0);
+    if (o.pose === 'fall') g.setAttribute('transform', g.getAttribute('transform') + ' rotate(-22)');
     const sit = o.pose === 'sit' || o.pose === 'type';
     const hip = sit ? -42 : -46, sh = sit ? -80 : -84;
     // legs
@@ -73,15 +76,22 @@
       P(g, `M-4 ${hip} L14 ${hip + 2} L15 0 L11 0 L10 ${hip + 7} L-6 ${hip + 6} Z`, o.legs, { w: 1.7 });
       P(g, `M-9 ${hip + 1} L7 ${hip + 4} L8 0 L4 0 L3 ${hip + 9} L-10 ${hip + 7} Z`, o.legs2 || o.legs, { w: 1.7, dir: 'v' });
     } else {
-      const st = o.pose === 'walk' || o.pose === 'carry' ? 11 : 5;
+      const st = o.pose === 'walk' || o.pose === 'carry' ? 11 : o.pose === 'run' ? 17 : o.pose === 'fall' ? 9 : 5;
       P(g, `M-5 ${hip} L${-4 - st} -2 L${-st} -2 L1 ${hip + 6} Z`, o.legs, { w: 1.7, dir: 'v' });
       P(g, `M1 ${hip} L${2 + st} -2 L${6 + st} -2 L6 ${hip + 4} Z`, o.legs2 || o.legs, { w: 1.7, dir: 'v' });
       P(g, `M${-4 - st} -1 l-6 0`, null, { w: 2.6 }); P(g, `M${6 + st} -1 l7 0`, null, { w: 2.6 });
+      if (o.garters !== false) for (let k = 1; k < 4; k++) { const yy = hip + k * (-hip / 4); const fx = t => -2 + (-st - 2) * t; const t0 = (yy - hip) / -hip;
+        P(g, `M${fx(t0) - 3} ${yy - 3} l6 5 M${fx(t0) + 3} ${yy - 3} l-6 5`, null, { w: 0.8, solid: true, stroke: shade(W[o.legs] || o.legs, -0.45) }); }
     }
     // tunic, flared at the hem, with a band at neck and hem
     P(g, `M-9 ${sh} Q-14 ${hip} -16 ${hip + 6} L16 ${hip + 6} Q13 ${hip} 9 ${sh} Q0 ${sh - 4} -9 ${sh} Z`, o.tunic);
     P(g, `M-16 ${hip + 2} L16 ${hip + 2}`, null, { w: 1.4, stroke: shade(W[o.tunic] || o.tunic, -0.35) });
+    // a belt and a stitched hem trim, as on the original's tunics
+    if (!o.jacket) { P(g, `M-11 ${hip - 12} Q0 ${hip - 9} 11 ${hip - 12}`, null, { w: 2, solid: true, stroke: shade(W[o.tunic] || o.tunic, -0.45) }); for (let k = -12; k <= 12; k += 6) C(g, k, hip + 3, 1, W.linen, { w: 0.5, solid: true }); }
     if (o.cloak) P(g, `M-9 ${sh} Q-22 ${sh + 20} -19 ${hip + 2} L-12 ${hip} Q-12 ${sh + 14} -4 ${sh - 2} Z`, o.cloak);
+    if (o.jacket) { P(g, `M-4 ${sh - 1} L2 ${sh + 18} L8 ${sh - 1}`, null, { w: 1.3, solid: true, stroke: W.buff }); P(g, `M-11 ${sh + 8} q4 10 2 20 M12 ${sh + 8} q-4 10 -2 20`, null, { w: 1, stroke: '#7A6E66', solid: true }); P(g, `M-8 ${sh + 30} l-2 6`, null, { w: 1.2, stroke: '#D9CCB4', solid: true }); }
+    if (o.tie) P(g, `M1 ${sh} l-3 4 l3 20 l3 -20 Z`, o.tie, { w: 1 });
+    if (o.hoodie) P(g, `M-10 ${sh + 2} Q-18 ${sh - 14} -8 ${sh - 20}`, null, { w: 3.4, stroke: shade(W[o.tunic] || o.tunic, -0.15), solid: true });
     // arms by pose (shoulder at 0,sh); a = [upper end x,y, hand x,y] for front and back arm
     const A = {
       stand: [[6, sh + 20, 8, sh + 34], [-6, sh + 20, -8, sh + 34]],
@@ -94,12 +104,23 @@
       carry: [[16, sh + 8, 30, sh + 2], [10, sh + 12, 26, sh + 6]],
       type: [[18, sh + 14, 32, sh + 20], [12, sh + 18, 28, sh + 24]],
       think: [[12, sh + 18, 6, sh - 4], [-6, sh + 20, -8, sh + 34]],
+      shrug: [[16, sh + 14, 24, sh + 2], [-16, sh + 14, -24, sh + 2]],
+      facepalm: [[14, sh + 6, 8, sh - 16], [-6, sh + 20, -8, sh + 34]],
+      run: [[16, sh + 12, 28, sh + 2], [-14, sh + 16, -26, sh + 24]],
+      eat: [[16, sh + 12, 10, sh - 8], [10, sh + 18, 22, sh + 22]],
+      wave: [[16, sh - 4, 26, sh - 26], [-6, sh + 20, -8, sh + 34]],
+      crowd: [[18, sh + 2, 34, sh - 10], [-14, sh - 14, -20, sh - 30]],
+      offer: [[20, sh + 8, 38, sh + 4], [14, sh + 14, 32, sh + 12]],
+      fall: [[18, sh - 10, 30, sh - 24], [-14, sh - 12, -26, sh - 22]],
+      shout: [[18, sh - 6, 32, sh - 20], [-6, sh + 20, -8, sh + 34]],
     }[o.pose] || [[6, sh + 20, 8, sh + 34], [-6, sh + 20, -8, sh + 34]];
     for (const [i, a] of A.entries()) {
       const sx = i ? -6 : 6;
       P(g, `M${sx} ${sh + 2} L${a[0]} ${a[1]} L${a[2]} ${a[3]}`, null, { w: 4.6, stroke: shade(W[o.tunic] || o.tunic, i ? -0.25 : -0.1), solid: true });
       P(g, `M${sx} ${sh + 2} L${a[0]} ${a[1]} L${a[2]} ${a[3]}`, null, { w: 1.2 });
-      C(g, a[2], a[3], 2.6, 'white', { w: 1.2 });
+      C(g, a[2], a[3], 3, 'white', { w: 1.1 });
+      const ang = Math.atan2(a[3] - a[1], a[2] - a[0]);
+      for (const d of [-0.55, 0, 0.55]) P(g, `M${a[2]} ${a[3]} l${5.5 * Math.cos(ang + d)} ${5.5 * Math.sin(ang + d)}`, null, { w: 1.5, solid: true, stroke: W.thread });
     }
     // head: oval, cap of hair, nose to the right, an eye
     P(g, `M-1 ${sh - 2} l0 -5`, null, { w: 4, stroke: W.white, solid: true });
@@ -108,6 +129,22 @@
     if (o.long) P(g, `M-8 ${sh - 14} Q-12 ${sh - 2} -6 ${sh + 6} L-2 ${sh - 6} Z`, o.hair);
     if (o.beard) P(g, `M0 ${sh - 6} Q6 ${sh - 2} 9 ${sh - 10} Q8 ${sh - 4} 2 ${sh - 2} Z`, o.hair);
     C(g, 4, sh - 17, 0.9, W.thread, { w: 1, solid: true });
+    // a bigger Bayeux nose, a brow, a mouth that shows the mood
+    P(g, `M9 ${sh - 17} L14 ${sh - 12} L9 ${sh - 11}`, 'white', { w: 1.2, solid: true });
+    const mood = o.mood || '';
+    if (mood === 'angry') P(g, `M1 ${sh - 22} L7 ${sh - 19}`, null, { w: 1.6, solid: true });
+    else if (mood === 'shock' || mood === 'shout') P(g, `M1 ${sh - 23} Q4 ${sh - 26} 7 ${sh - 23}`, null, { w: 1.2, solid: true });
+    else P(g, `M1 ${sh - 21} L7 ${sh - 21}`, null, { w: 0.9, solid: true });
+    if (mood === 'happy') P(g, `M3 ${sh - 9} Q6 ${sh - 6} 9 ${sh - 9}`, null, { w: 1.1, solid: true });
+    else if (mood === 'angry' || mood === 'sad') P(g, `M3 ${sh - 7} Q6 ${sh - 10} 9 ${sh - 7}`, null, { w: 1.1, solid: true });
+    else if (mood === 'shock' || mood === 'shout') C(g, 7, sh - 8, mood === 'shout' ? 2.6 : 1.8, 'red', { w: 0.9, solid: true });
+    if (o.melt) { for (let k = 0; k < 4; k++) P(g, `M${-4 + k * 4} ${sh - 6} q${k % 2 ? 2 : -2} 6 0 ${8 + k * 3}`, null, { w: 1.6, stroke: W.ochre, solid: true }); P(g, `M-7 ${sh - 14} q-4 6 -2 12`, null, { w: 1.4, stroke: W.white, solid: true }); C(g, -2, sh - 18, 1.2, W.thread, { w: 1, solid: true }); }
+    if (o.moustache) P(g, `M5 ${sh - 10} Q9 ${sh - 12} 12 ${sh - 8}`, null, { w: 1.8, solid: true, stroke: W[o.hair] || o.hair });
+    if (o.glasses) { C(g, 5, sh - 17, 3.2, null, { w: 1, solid: true }); L(g, -4, sh - 18, 2, sh - 17, { w: 0.9, solid: true }); }
+    if (o.norman) P(g, `M-8 ${sh - 13} Q-9 ${sh - 20} -6 ${sh - 24}`, null, { w: 2.6, stroke: W.white, solid: true });
+    if (o.sweat) for (let k = 0; k < 3; k++) P(g, `M${-12 - k * 4} ${sh - 24 + k * 6} q-2 4 0 6`, null, { w: 1.1, stroke: W.sky, solid: true });
+    if (o.steam) for (let k = 0; k < 3; k++) P(g, `M${-6 + k * 8} ${sh - 32} q-4 -6 0 -12 q4 -6 0 -12`, null, { w: 1.3, stroke: W.grey, solid: true });
+    if (o.hearts) for (let k = 0; k < 3; k++) P(g, `M${16 + k * 9} ${sh - 30 - k * 8} l-3 -3 a2 2 0 0 1 3 -3 a2 2 0 0 1 3 3 Z`, 'red', { w: 0.8, solid: true });
     if (o.crown) P(g, `M-7 ${sh - 27} l2 -8 l3 5 l3 -7 l3 7 l3 -5 l1 8 Z`, 'ochre', { w: 1.4 });
     if (o.hat) P(g, `M-9 ${sh - 25} Q1 ${sh - 40} 11 ${sh - 25} Z`, o.hat, { w: 1.4 });
     if (o.mitre) P(g, `M-6 ${sh - 26} L-2 ${sh - 42} L2 ${sh - 33} L6 ${sh - 42} L9 ${sh - 26} Z`, o.mitre, { w: 1.4 });
@@ -122,6 +159,19 @@
     if (o.hold === 'book') R(g, hx - 6, hy - 14, 14, 16, 'blue', { w: 1.3 });
     if (o.hold === 'medal') { L(g, hx, hy, hx, hy + 8, { w: 1 }); C(g, hx, hy + 12, 5, 'ochre', { w: 1.3 }); }
     if (o.hold === 'phone') R(g, hx - 2, hy - 10, 6, 11, 'blue', { w: 1.2 });
+    if (o.hold === 'fork') { L(g, hx, hy, hx + 2, hy - 16, { w: 1.4 }); P(g, `M${hx - 2} ${hy - 16} q4 -6 8 0`, 'ochre', { w: 1, solid: true }); }
+    if (o.hold === 'gpu') { R(g, hx - 16, hy - 26, 32, 18, 'grey', { w: 1.3 }); C(g, hx - 7, hy - 17, 5, 'blue', { w: 1 }); C(g, hx + 7, hy - 17, 5, 'blue', { w: 1 }); }
+    if (o.hold === 'box') { R(g, hx - 14, hy - 18, 28, 20, 'buff', { w: 1.3 }); P(g, `M${hx - 10} ${hy - 18} l4 -10 M${hx + 2} ${hy - 18} l6 -8`, null, { w: 1.2 }); }
+    if (o.hold === 'laptop') { P(g, `M${hx - 14} ${hy} L${hx + 14} ${hy} L${hx + 18} ${hy - 18} L${hx - 10} ${hy - 18} Z`, 'grey', { w: 1.2 }); }
+    if (o.hold === 'chalk') C(g, hx + 1, hy - 1, 1.6, 'white', { w: 0.9 });
+    if (o.hold === 'lute') { P(g, `M${hx - 10} ${hy + 12} q-12 -6 -6 -18 q10 -6 16 4 Z`, 'ochre', { w: 1.2 }); L(g, hx, hy + 2, hx + 20, hy - 22, { w: 2 }); }
+    if (o.hold === 'microphone') { L(g, hx, hy, hx + 4, hy - 10, { w: 2 }); C(g, hx + 5, hy - 13, 3.5, 'grey', { w: 1 }); }
+    if (o.hold === 'sign') { L(g, hx, hy + 10, hx, hy - 40, { w: 2.2 }); R(g, hx - 26, hy - 62, 52, 24, 'white', { w: 1.3 }); if (o.sign) T(g, hx, hy - 46, o.sign, Math.min(9, 92 / o.sign.length), 'red', { ls: 0.4 }); }
+    if (o.hold === 'paper') { R(g, hx - 3, hy - 22, 18, 24, 'white', { w: 1.2 }); for (let k = 0; k < 4; k++) L(g, hx, hy - 17 + k * 5, hx + 12, hy - 17 + k * 5, { w: 0.7 }); }
+    if (o.hold === 'gavel') { L(g, hx, hy, hx + 8, hy - 14, { w: 2.2 }); R(g, hx + 2, hy - 22, 14, 7, 'rust', { w: 1.1 }); }
+    if (o.hold === 'brush') { L(g, hx, hy, hx + 10, hy - 18, { w: 1.6 }); C(g, hx + 11, hy - 20, 2.2, 'red', { w: 0.8 }); }
+    // the name stitched above the head, as the original names its people
+    if (o.name) T(g.parentNode, 0, 0, o.name, o.nameSize || 10.5, o.nameColor || 'red', { ls: 1.2, halo: true, transformFrom: g, dy: sh - 36 - (o.crown ? 10 : 0) - (o.hat || o.mitre ? 12 : 0) });
     return g;
   }
 
@@ -218,6 +268,51 @@
     star(p, x, y, s) { const g = grp(p, x, y, s || 1); P(g, 'M0 -10 L3 -3 L10 -3 L4 2 L6 10 L0 5 L-6 10 L-4 2 L-10 -3 L-3 -3 Z', 'ochre', { w: 1.1 }); return g; },
     // a book or paper title, held up as a banner
     banner(p, x, y, t, o) { const g = grp(p, x, y); const w = Math.max(80, t.length * 7.6 + 20); P(g, `M${-w / 2} -16 h${w} l-8 12 l8 12 h${-w} l8 -12 Z`, (o && o.c) || 'white', { w: 1.4 }); T(g, 0, 4, t, 10, (o && o.tc) || 'red', { ls: 0.8 }); return g; },
+    // a bowl of spaghetti, with strands everywhere
+    spaghetti(p, x, y) { const g = grp(p, x, y || G - 46); P(g, 'M-30 -8 Q0 22 30 -8 Z', 'white', { w: 1.6 }); for (let i = 0; i < 7; i++) P(g, `M${-24 + i * 8} -8 q${4 - i} -16 ${8 - i * 2} -4 q4 10 8 -2`, null, { w: 1.3, stroke: W.ochre, solid: true }); for (let i = 0; i < 4; i++) C(g, -16 + i * 11, -12, 2.6, 'red', { w: 0.8 }); return g; },
+    // a data centre: a long hall of server racks, with cooling towers steaming, and power lines coming in
+    datacentre(p, x, o) {
+      o = o || {}; const g = grp(p, x, G, o.s || 1);
+      R(g, -110, -70, 220, 70, 'grey', { dir: 'h' }); P(g, 'M-116 -70 L116 -70 L106 -82 L-106 -82 Z', 'blue');
+      for (let i = 0; i < 9; i++) { R(g, -100 + i * 22, -60, 16, 52, 'black', { w: 1.1 }); for (let k = 0; k < 5; k++) C(g, -92 + i * 22, -52 + k * 10, 1.4, k % 2 ? 'teal' : 'ochre', { w: 0.6, solid: true }); }
+      if (o.label) T(g, 0, -88, o.label, 10, 'blue', { ls: 1 });
+      for (const cx of [140, 186]) { P(g, `M${cx - 18} 0 Q${cx - 10} -50 ${cx - 14} -90 L${cx + 14} -90 Q${cx + 10} -50 ${cx + 18} 0 Z`, 'buff', { dir: 'v' }); for (let k = 0; k < 3; k++) P(g, `M${cx - 8 + k * 8} -94 q-8 -14 0 -26 q8 -12 0 -24`, null, { w: 2, stroke: W.white, solid: true }); }
+      return g;
+    },
+    // a pylon carrying power
+    pylon(p, x, o) { const g = grp(p, x, G, (o && o.s) || 1); P(g, 'M-16 0 L-3 -130 L3 -130 L16 0', null, { w: 2 }); for (let k = 0; k < 5; k++) L(g, -14 + k * 2.6, -k * 26, 14 - k * 2.6, -k * 26 - 26, { w: 1 }); L(g, -26, -110, 26, -110, { w: 2 }); L(g, -20, -90, 20, -90, { w: 2 }); for (const sx of [-26, 26]) P(g, `M${sx} -110 q${sx * 2} 30 ${sx * 4} 10`, null, { w: 1, stroke: W.thread, solid: true }); return g; },
+    // a crane building something
+    crane(p, x, o) { const g = grp(p, x, G, (o && o.s) || 1); L(g, 0, 0, 0, -170, { w: 3 }); L(g, -40, -170, 90, -170, { w: 3 }); P(g, 'M0 -170 L-30 -170 L-30 -156 L0 -156', 'ochre', { w: 1.2 }); L(g, 80, -170, 80, -110, { w: 1.2, solid: true }); R(g, 70, -110, 20, 14, 'grey', { w: 1.2 }); for (let k = 0; k < 8; k++) L(g, -4, -k * 21, 4, -k * 21 - 21, { w: 1 }); return g; },
+    // a pizza, and a pot of glue
+    pizza(p, x, y) { const g = grp(p, x, y || G - 46); P(g, 'M-34 0 Q0 -18 34 0 Q0 12 -34 0 Z', 'ochre'); for (const [cx, cy] of [[-16, -2], [0, -6], [14, -1], [-4, 3]]) C(g, cx, cy, 4, 'red', { w: 0.9 }); R(g, 42, -26, 16, 26, 'white', { w: 1.3 }); P(g, 'M44 -26 l6 -10 l6 10 Z', 'ochre', { w: 1 }); T(g, 50, -10, 'GLVTEN', 5.5, 'blue', { ls: 0.2 }); P(g, 'M52 -36 q-6 -10 -18 -14', null, { w: 1.2, stroke: W.white, solid: true }); return g; },
+    // a judge's bench
+    bench2(p, x, o) { const g = grp(p, x, G); R(g, -50, -80, 100, 80, 'rust', { dir: 'v' }); R(g, -56, -86, 112, 8, 'ochre'); if (o && o.label) T(g, 0, -44, o.label, 9, 'white', { ls: 0.6 }); return g; },
+    // a chart on a board, going up or down
+    chart(p, x, o) { o = o || {}; const g = grp(p, x, G, o.s || 1); R(g, -44, -120, 88, 74, 'white', { w: 1.4 }); L(g, -2, -46, -2, 0, { w: 2.4 }); L(g, -36, -54, -36, -112, { w: 1 }); L(g, -36, -54, 36, -54, { w: 1 }); const up = o.up !== false; P(g, up ? 'M-34 -60 L-18 -70 L-6 -66 L8 -84 L20 -80 L34 -108' : 'M-34 -106 L-18 -96 L-6 -100 L8 -78 L20 -82 L34 -58', null, { w: 2.4, stroke: up ? W.green : W.red, solid: true }); P(g, up ? 'M34 -108 l-9 1 l5 7 Z' : 'M34 -58 l-9 -1 l5 -7 Z', up ? 'green' : 'red', { w: 1 }); if (o.label) T(g, 0, -126, o.label, 8, 'blue', { ls: 0.5 }); return g; },
+    // a blackboard of sums
+    blackboard(p, x, o) { o = o || {}; const g = grp(p, x, G); R(g, -70, -150, 140, 90, 'green', { dir: 'h' }); R(g, -74, -154, 148, 98, null, { w: 3 }); L(g, -60, -56, -66, 0, { w: 2.4 }); L(g, 60, -56, 66, 0, { w: 2.4 }); (o.lines || ['a²+b²=c²', 'Σ 1/n² = π²/6', '∀ε ∃δ …']).forEach((s, k) => T(g, 0, -126 + k * 22, s, 12, 'white', { ls: 0.5, font: 'serif' })); return g; },
+    // a stack of books and journals
+    books(p, x, o) { const g = grp(p, x, G); const n = (o && o.n) || 5; for (let i = 0; i < n; i++) R(g, -26 + (i % 2) * 4, -12 - i * 12, 52, 12, ['blue', 'red', 'ochre', 'teal', 'sage'][i % 5], { w: 1.1 }); if (o && o.label) T(g, 0, -20 - n * 12, o.label, 8, 'red', { ls: 0.4 }); return g; },
+    // a ring light and phone on a tripod, for the influencer
+    ringlight(p, x) { const g = grp(p, x, G); L(g, 0, 0, 0, -110, { w: 2 }); L(g, 0, -20, -16, 0, { w: 1.6 }); L(g, 0, -20, 16, 0, { w: 1.6 }); C(g, 0, -128, 20, null, { w: 5, stroke: W.white, solid: true }); C(g, 0, -128, 20, null, { w: 1.2 }); R(g, -5, -136, 10, 16, 'blue', { w: 1 }); return g; },
+    // a magazine cover with a model who is not there
+    magazine(p, x, o) { const g = grp(p, x, G, (o && o.s) || 1); R(g, -34, -120, 68, 96, 'white', { w: 1.6 }); T(g, 0, -104, (o && o.title) || 'MODA', 13, 'red', { ls: 2 }); P(g, 'M-10 -30 Q-12 -56 0 -60 Q12 -56 10 -30 Z', 'pink'); C(g, 0, -72, 9, 'white', { w: 1.2 }); P(g, 'M-9 -74 Q-10 -88 0 -88 Q12 -88 10 -70 Q8 -80 -9 -74 Z', 'ochre', { w: 1.2 }); P(g, 'M-14 -86 l4 4 M14 -86 l-4 4', null, { w: 1, stroke: W.ochre, solid: true }); L(g, 0, -24, -6, 0, { w: 2 }); L(g, 0, -24, 6, 0, { w: 2 }); return g; },
+    // music: notes flying from a spot
+    notes(p, x, y, n) { const g = grp(p, x, y); for (let i = 0; i < (n || 4); i++) { const nx = i * 18, ny = -i * 10 + (i % 2) * 6; C(g, nx, ny, 3.4, W.thread, { w: 1, solid: true }); L(g, nx + 3, ny, nx + 3, ny - 16, { w: 1.3, solid: true }); if (i % 2) P(g, `M${nx + 3} ${ny - 16} q8 2 6 10`, null, { w: 1.2, solid: true }); } return g; },
+    // a drum
+    drum(p, x) { const g = grp(p, x, G); P(g, 'M-20 -40 L-20 -6 Q0 2 20 -6 L20 -40', 'red', { dir: 'v' }); P(g, 'M-20 -40 Q0 -48 20 -40 Q0 -32 -20 -40 Z', 'white', { w: 1.2 }); for (let i = 0; i < 4; i++) L(g, -18 + i * 12, -38, -12 + i * 12, -6, { w: 0.9 }); return g; },
+    // a painter's easel and canvas, with a blue ribbon
+    easel(p, x, o) { const g = grp(p, x, G); L(g, -30, 0, -6, -130, { w: 2.4 }); L(g, 30, 0, 6, -130, { w: 2.4 }); L(g, 0, 0, 0, -120, { w: 2 }); R(g, -42, -118, 84, 62, 'white', { w: 1.6 }); P(g, 'M-38 -60 Q-20 -104 0 -84 Q14 -112 38 -64 Z', 'teal', { w: 1 }); C(g, 18, -98, 8, 'ochre', { w: 1 }); P(g, 'M-6 -100 l2 -10 l4 0 l2 10 Z', 'rust', { w: 0.9 }); if (o && o.ribbon) { C(g, 40, -114, 9, 'blue', { w: 1.2 }); P(g, 'M36 -106 l-4 16 l6 -5 l4 6 l2 -16', 'blue', { w: 1 }); } return g; },
+    // a door marked EXIT, half open
+    door(p, x, o) { const g = grp(p, x, G); R(g, -26, -130, 52, 130, 'rust', { dir: 'v' }); P(g, 'M-26 -130 L4 -122 L4 6 L-26 0 Z', 'buff', { w: 1.4 }); C(g, 0, -60, 2.4, 'ochre', { w: 1 }); if (o && o.label) T(g, 0, -138, o.label, 9, 'red', { ls: 1 }); return g; },
+    // a throne
+    throne(p, x) { const g = grp(p, x, G); P(g, 'M-24 0 L-24 -120 Q0 -140 24 -120 L24 0 Z', 'ochre', { dir: 'v' }); R(g, -28, -50, 56, 10, 'red'); for (let i = 0; i < 3; i++) C(g, -12 + i * 12, -118, 3, 'red', { w: 1 }); return g; },
+    // a rocket on its pad
+    rocket(p, x, o) { const g = grp(p, x, G, (o && o.s) || 1); P(g, 'M-10 -20 L-10 -110 Q0 -136 10 -110 L10 -20 Z', 'white', { dir: 'v' }); P(g, 'M-10 -40 L-22 -14 L-10 -20 Z M10 -40 L22 -14 L10 -20 Z', 'red', { w: 1.2 }); for (let i = 0; i < 4; i++) P(g, `M${-8 + i * 5} -18 q-3 10 ${2 - i} 18`, null, { w: 2.2, stroke: [W.ochre, W.red, W.rust, W.ochre][i], solid: true }); return g; },
+    // a laptop on a desk
+    desk(p, x, o) { const g = grp(p, x, G); R(g, -40, -48, 80, 6, 'rust', { w: 1.3 }); L(g, -34, -42, -34, 0, { w: 2.2 }); L(g, 34, -42, 34, 0, { w: 2.2 }); P(g, 'M-20 -48 L20 -48 L24 -72 L-16 -72 Z', 'grey', { w: 1.2 }); if (o && o.text) T(g, 2, -58, o.text, 5.5, 'white', { ls: 0.2, font: "'IBM Plex Mono', monospace" }); return g; },
+    // a nuclear power station's cooling tower
+    tower(p, x, o) { const g = grp(p, x, G, (o && o.s) || 1); P(g, 'M-34 0 Q-18 -60 -24 -120 L24 -120 Q18 -60 34 0 Z', 'buff', { dir: 'v' }); for (let k = 0; k < 3; k++) P(g, `M${-12 + k * 12} -126 q-10 -14 0 -26 q10 -12 0 -26`, null, { w: 2.4, stroke: W.white, solid: true }); return g; },
   };
 
   // margin creatures for the borders: pairs of birds and beasts, as in the original's borders

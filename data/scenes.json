@@ -183,6 +183,23 @@
   ]
  },
  {
+  "id": "openai",
+  "year": 2015,
+  "latin": "HIC SAMVEL ET ELON OPENAI CONDVNT, NON LVCRI CAVSA",
+  "en": "Here Sam and Elon found OpenAI, not for profit.",
+  "note": "OpenAI was founded in December 2015 as a non-profit research lab, with Sam Altman, Elon Musk, Ilya Sutskever, Greg Brockman and others among its founders and a pledge of a billion dollars from its backers, to make sure that artificial general intelligence \"benefits all of humanity\". Musk left the board in 2018. In 2019 OpenAI set up a capped-profit company to raise money, Microsoft invested, and in 2024 Musk sued, saying the lab had abandoned its founding mission; OpenAI published his old emails in reply.",
+  "sources": [
+   {
+    "title": "OpenAI (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/OpenAI"
+   },
+   {
+    "title": "Elon Musk (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Elon_Musk"
+   }
+  ]
+ },
+ {
   "id": "alphago",
   "year": 2016,
   "latin": "HIC ALPHAGO MOTVM XXXVII FACIT ET OMNES MIRANTVR",
@@ -243,6 +260,23 @@
   ]
  },
  {
+  "id": "artprize",
+  "year": 2022,
+  "latin": "HIC PICTVRA MACHINAE PRAEMIVM VINCIT ET PICTORES IRASCVNTVR",
+  "en": "Here a machine's painting wins the prize, and the painters are furious.",
+  "note": "Jason M. Allen won first prize for digital art at the Colorado State Fair with \"Théâtre D'opéra Spatial\", an image he made with the generator Midjourney and touched up. When he said how it was made, artists were outraged, and the US Copyright Office later refused to register it because it lacked human authorship. The same year DALL-E 2 and Stable Diffusion put image generation in everyone's hands, and lawsuits over the pictures they were trained on followed.",
+  "sources": [
+   {
+    "title": "Théâtre D'opéra Spatial (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Th%C3%A9%C3%A2tre_D%27op%C3%A9ra_Spatial"
+   },
+   {
+    "title": "Midjourney (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Midjourney"
+   }
+  ]
+ },
+ {
   "id": "chatgpt",
   "year": 2022,
   "latin": "HIC OMNES CVM MACHINA LOQVVNTVR ET DISCIPVLI PENSA NON SCRIBVNT",
@@ -252,6 +286,70 @@
    {
     "title": "ChatGPT (Wikipedia)",
     "url": "https://en.wikipedia.org/wiki/ChatGPT"
+   }
+  ]
+ },
+ {
+  "id": "bard",
+  "year": 2023,
+  "latin": "HIC BARDVS DE STELLIS ERRAT ET CENTVM MILIARDA EVANESCVNT",
+  "en": "Here the bard gets the stars wrong, and a hundred billion vanish.",
+  "note": "Racing to answer ChatGPT, Google showed off its chatbot Bard in an advert in which it said the James Webb Space Telescope took the very first pictures of a planet outside our solar system. Astronomers pointed out that the first such picture was taken in 2004 by a telescope in Chile. Shares in Google's owner Alphabet fell about 8 per cent that day, roughly $100 billion of market value. Bard was later renamed Gemini.",
+  "sources": [
+   {
+    "title": "Gemini (chatbot) (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Gemini_(chatbot)"
+   }
+  ]
+ },
+ {
+  "id": "spaghetti",
+  "year": 2023,
+  "latin": "HIC VILELMVS FABER SPAGHETTOS EDIT, SED NON VERE",
+  "en": "Here Will Smith eats spaghetti. But not really.",
+  "note": "In March 2023 a Reddit user posted a clip, made with the open text-to-video model ModelScope, of \"Will Smith eating spaghetti\": a melting face, a fork that became noodles, pasta that ate itself. It became the unofficial benchmark for AI video, remade with every new model. In February 2024 Smith posted a parody of himself eating spaghetti, and the same month OpenAI showed Sora, whose clips were hard to tell from film. By 2025 generated video came with sound and dialogue.",
+  "sources": [
+   {
+    "title": "Will Smith Eating Spaghetti test (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Will_Smith_Eating_Spaghetti_test"
+   },
+   {
+    "title": "Sora (text-to-video model) (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Sora_(text-to-video_model)"
+   }
+  ]
+ },
+ {
+  "id": "lawyers",
+  "year": 2023,
+  "latin": "HIC ADVOCATI CAVSAS A MACHINA FICTAS CITANT ET IVDEX IRASCITVR",
+  "en": "Here the lawyers cite cases the machine made up, and the judge is cross.",
+  "note": "In Mata v. Avianca, a personal-injury suit against an airline in New York, two lawyers filed a brief citing six court decisions that did not exist; ChatGPT had invented them, with plausible names, quotations and page numbers, and assured the lawyer they were real. The judge fined the lawyers and their firm $5,000. It was the first of hundreds of such cases around the world, as courts learned to check citations for hallucinations.",
+  "sources": [
+   {
+    "title": "Mata v. Avianca, Inc. (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Mata_v._Avianca,_Inc."
+   },
+   {
+    "title": "Hallucination (artificial intelligence) (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)"
+   }
+  ]
+ },
+ {
+  "id": "strike",
+  "year": 2023,
+  "latin": "HIC SCRIPTORES ET HISTRIONES CESSANT NE A MACHINIS REPONANTVR",
+  "en": "Here the writers and actors strike, so as not to be replaced by machines.",
+  "note": "Hollywood's screenwriters went on strike from May to September 2023 and its actors from July to November, the first time both had struck together since 1960. Pay from streaming was the main fight, but so was AI: the writers won rules that studios could not use AI to write or rewrite their scripts, and the actors won consent and payment before a studio could make a digital replica of them.",
+  "sources": [
+   {
+    "title": "2023 Writers Guild of America strike (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/2023_Writers_Guild_of_America_strike"
+   },
+   {
+    "title": "2023 SAG-AFTRA strike (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/2023_SAG-AFTRA_strike"
    }
   ]
  },
@@ -273,6 +371,53 @@
   ]
  },
  {
+  "id": "sacked",
+  "year": 2023,
+  "latin": "HIC SAMVEL EXPELLITVR ET POST QVINQVE DIES REDIT",
+  "en": "Here Sam is thrown out, and five days later he is back.",
+  "note": "On Friday 17 November 2023 OpenAI's board fired its chief executive, Sam Altman, saying he had not been \"consistently candid\" with it. Over a frantic weekend Microsoft offered him a job, and more than 700 of OpenAI's roughly 770 staff signed a letter threatening to quit unless he returned, among them Ilya Sutskever, who had voted to remove him. By the following Wednesday he was reinstated, and most of the board was replaced.",
+  "sources": [
+   {
+    "title": "Removal of Sam Altman from OpenAI (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Removal_of_Sam_Altman_from_OpenAI"
+   }
+  ]
+ },
+ {
+  "id": "pizza",
+  "year": 2024,
+  "latin": "HIC MACHINA GLVTEN IN PVLTEM ET LAPIDES IN CIBVM SVADET",
+  "en": "Here the machine advises glue on pizza, and a rock a day.",
+  "note": "When Google put AI-written answers at the top of its search results, users soon found it recommending about an eighth of a cup of non-toxic glue to keep cheese on pizza, a joke from an eleven-year-old Reddit comment, and eating at least one small rock a day, from an article in the satirical paper The Onion. Google said such answers were rare and came from unusual searches, and cut back where the overviews appeared.",
+  "sources": [
+   {
+    "title": "AI Overviews (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/AI_Overviews"
+   },
+   {
+    "title": "The Register, 31 May 2024",
+    "url": "https://www.theregister.com/2024/05/31/google_ai_search_update/"
+   }
+  ]
+ },
+ {
+  "id": "jensen",
+  "year": 2024,
+  "latin": "HIC IENSEN IN TVNICA CORIACEA REX FIT ET OMNES FORNACES EMERE CVPIVNT",
+  "en": "Here Jensen in his leather jacket becomes king, and everyone wants to buy his furnaces.",
+  "note": "Nvidia's graphics chips became the essential tool for training and running AI, and buyers waited months for them. In June 2024 Nvidia briefly became the world's most valuable company; in July 2025 it became the first company worth $4 trillion, and that October the first worth $5 trillion. Its co-founder and chief executive Jensen Huang, always in a black leather jacket, became the industry's showman, hand-delivering the first new machines to OpenAI and others.",
+  "sources": [
+   {
+    "title": "Nvidia (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Nvidia"
+   },
+   {
+    "title": "Jensen Huang (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Jensen_Huang"
+   }
+  ]
+ },
+ {
   "id": "nobel",
   "year": 2024,
   "latin": "HIC PRAEMIA NOBELIANA RETIVM MAGISTRIS DANTVR",
@@ -290,6 +435,27 @@
   ]
  },
  {
+  "id": "datacentres",
+  "year": 2025,
+  "latin": "HIC CASTELLA DATORVM AEDIFICANTVR ET FLVMINA ET FVLMINA BIBVNT",
+  "en": "Here the castles of data are built, and they drink rivers and lightning.",
+  "note": "The great building project of the decade was the data centre. In September 2024 Microsoft agreed to buy all the power from a restarted reactor at Three Mile Island for twenty years; in January 2025 OpenAI, SoftBank and Oracle announced Stargate, a plan to spend up to $500 billion on AI data centres in the United States. Meta, Google, Amazon and xAI raced to build their own, some drawing as much electricity as a city and large amounts of water for cooling.",
+  "sources": [
+   {
+    "title": "Stargate LLC (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Stargate_LLC"
+   },
+   {
+    "title": "Three Mile Island Nuclear Generating Station (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Three_Mile_Island_Nuclear_Generating_Station"
+   },
+   {
+    "title": "Data center (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Data_center"
+   }
+  ]
+ },
+ {
   "id": "deepseek",
   "year": 2025,
   "latin": "HIC BALAENA AB ORIENTE VENIT ET AVRVM MERCATORVM CADIT",
@@ -303,6 +469,82 @@
    {
     "title": "Nvidia (Wikipedia)",
     "url": "https://en.wikipedia.org/wiki/Nvidia"
+   }
+  ]
+ },
+ {
+  "id": "vibes",
+  "year": 2025,
+  "latin": "HIC OMNES VIBRATIONE CODICEM SCRIBVNT ET ARTIFICES PAGINARVM DISCEDVNT",
+  "en": "Here everyone codes by vibes, and the web designers pack their boxes.",
+  "note": "In February 2025 Andrej Karpathy described \"vibe coding\": describing what you want, accepting whatever the AI writes and never reading the code. By November it was the Collins Dictionary word of the year. Studies found real gains for some work, such as 14 per cent more customer issues resolved per hour in one call centre. Freelance writers and designers saw jobs dry up. Klarna said in 2024 its assistant did the work of 700 customer-service agents; in 2025 it began hiring people again, because customers wanted a human.",
+  "sources": [
+   {
+    "title": "Vibe coding (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Vibe_coding"
+   },
+   {
+    "title": "Generative AI at Work (NBER, Brynjolfsson, Li and Raymond)",
+    "url": "https://www.nber.org/papers/w31161"
+   },
+   {
+    "title": "Klarna rehiring (Entrepreneur)",
+    "url": "https://www.entrepreneur.com/business-news/klarna-ceo-reverses-course-by-hiring-more-humans-not-ai/491396"
+   }
+  ]
+ },
+ {
+  "id": "synthetic",
+  "year": 2025,
+  "latin": "HIC CANTORES ET EXEMPLARIA ET AVCTORITATES NVLLI SVNT",
+  "en": "Here the singers, the models and the influencers are nobody at all.",
+  "note": "The Velvet Sundown, an indie band with more than a million monthly listeners on Spotify in the summer of 2025, admitted it was \"a synthetic music project\" whose songs, voices and photos were made with AI. In August a Guess advert in Vogue used an AI-generated model, and some readers said they had cancelled their subscriptions. Virtual influencers such as Lil Miquela, a computer-generated nineteen-year-old with millions of followers, had been selling clothes on Instagram since 2016.",
+  "sources": [
+   {
+    "title": "The Velvet Sundown (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/The_Velvet_Sundown"
+   },
+   {
+    "title": "Lil Miquela (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Lil_Miquela"
+   },
+   {
+    "title": "Guess advert in Vogue (ABC News)",
+    "url": "https://abc7news.com/post/controversy-stirs-ai-generated-models-new-guess-ads-appearing-vogue/17390923/"
+   }
+  ]
+ },
+ {
+  "id": "olympiad",
+  "year": 2025,
+  "latin": "HIC MACHINAE AVRVM IN OLYMPIADE MATHEMATICA CAPIVNT",
+  "en": "Here the machines win gold at the Mathematical Olympiad.",
+  "note": "At the International Mathematical Olympiad in July 2025, an advanced version of Google DeepMind's Gemini, Deep Think, solved five of the six problems in plain written proofs within the contest's time limits, scoring 35 out of 42, gold-medal standard; its answers were graded by the competition's coordinators. OpenAI announced that an experimental model had reached the same score, graded by former medallists it hired. A year before, AI had managed silver only with problems translated into a formal proof language.",
+  "sources": [
+   {
+    "title": "International Mathematical Olympiad (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/International_Mathematical_Olympiad"
+   },
+   {
+    "title": "Gemini Deep Think at IMO 2025 (Google DeepMind)",
+    "url": "https://deepmind.google/en/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/"
+   }
+  ]
+ },
+ {
+  "id": "erdos",
+  "year": 2025,
+  "latin": "HIC PROBLEMATA ERDOSIANA SOLVTA CLAMANTVR, SED IAM IN LIBRIS ERANT",
+  "en": "Here ten Erdős problems are announced solved, but they were already in the books.",
+  "note": "In October 2025 an OpenAI vice-president posted that GPT-5 had \"found solutions to 10 (!) previously unsolved Erdős problems\". Thomas Bloom, the mathematician who runs the Erdős problems website, replied that this was \"a dramatic misrepresentation\": the problems were only listed as open because he did not know of the solutions, which GPT-5 had found in existing papers. Demis Hassabis of Google DeepMind answered in three words: \"this is embarrassing\". The post was deleted. Finding forgotten results in the literature turned out to be useful in its own right.",
+  "sources": [
+   {
+    "title": "Paul Erdős (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+   },
+   {
+    "title": "The Decoder: a GPT-5 math breakthrough that never happened",
+    "url": "https://the-decoder.com/leading-openai-researcher-announced-a-gpt-5-math-breakthrough-that-never-happened/"
    }
   ]
  },

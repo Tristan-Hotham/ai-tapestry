@@ -8,7 +8,7 @@ Blog post: https://blog.tristanhotham.com/2026/10/31/ai-tapestry/
 
 ## The scenes
 
-1843 Lovelace's notes · 1950 Turing's question · 1956 Dartmouth · 1958 the perceptron · 1966 ELIZA · 1973 the Lighthill report and the first AI winter · 1980 expert systems and the second winter · 1986 backpropagation · 1997 Deep Blue · 2011 Watson · 2012 AlexNet, ImageNet and the cats · 2016 AlphaGo's move 37 · 2017 the transformer (the comet) · 2019 GPT-2 held back · 2020 AlphaFold · 2022 ChatGPT · 2023 Bletchley Park · 2024 the Nobel prizes · 2025 DeepSeek's whale · 2025 agents · and the unfinished end.
+1843 Lovelace's notes · 1950 Turing's question · 1956 Dartmouth · 1958 the perceptron · 1966 ELIZA · 1973 the Lighthill report and the first AI winter · 1980 expert systems and the second winter · 1986 backpropagation · 1997 Deep Blue · 2011 Watson · 2012 AlexNet, ImageNet and the cats · 2015 OpenAI founded · 2016 AlphaGo's move 37 · 2017 the transformer (the comet) · 2019 GPT-2 held back · 2020 AlphaFold · 2022 an AI painting wins the art prize · 2022 ChatGPT · 2023 Bard gets the stars wrong · 2023 Will Smith eats spaghetti · 2023 the lawyers' invented cases · 2023 the writers' and actors' strikes · 2023 Bletchley Park · 2023 Sam Altman sacked and back in five days · 2024 glue on pizza · 2024 Jensen Huang crowned in his leather jacket · 2024 the Nobel prizes · 2025 the castles of data · 2025 DeepSeek's whale · 2025 vibe coding · 2025 the singers and influencers who are nobody · 2025 gold at the Maths Olympiad · 2025 the Erdős problems that were already solved · 2025 agents · and the unfinished end.
 
 ## How it works
 
