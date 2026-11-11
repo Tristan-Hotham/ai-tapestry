@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this data or code, please cite it as below."
+title: "The AI Tapestry: An Embroidered History of Artificial Intelligence, in the Manner of the Bayeux Tapestry"
+type: dataset
+authors:
+  - family-names: Hotham
+    given-names: Tristan
+    orcid: "https://orcid.org/0000-0003-4931-9349"
+    affiliation: "Independent researcher"
+doi: "10.5281/zenodo.23866754"
+url: "https://maps.tristanhotham.com/ai-tapestry/"
+repository-code: "https://github.com/Tristan-Hotham/ai-tapestry"
+license: CC-BY-4.0
+keywords:
+  - "history of artificial intelligence"
+  - "Bayeux Tapestry"
+  - "AI winter"
+  - "Alan Turing"
+  - "Ada Lovelace"
+  - "data visualisation"
+  - "illustration"
+  - "SVG"
